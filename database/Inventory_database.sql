@@ -28,8 +28,8 @@ CREATE TABLE Product (
 	product_category VARCHAR (15) NOT NULL,
 	gender CHAR (1) NOT NULL
 	CHECK (gender IN ('M', 'F')),
-	created_at DATE NOT NULL,
-	updated_at DATE NOT NULL,
+	created_at DATE NOT NULL DEFAULT CURRENT_DATE,
+	updated_at DATE NOT NULL DEFAULT CURRENT_DATE,
 	cost_price DECIMAL (10, 2) NOT NULL,
 	selling_price DECIMAL (10, 2) NOT NULL
 );
@@ -114,4 +114,8 @@ ADD CONSTRAINT foreign_key_sale_variant
 FOREIGN KEY (variant_id)
 REFERENCES product_variant (variant_id);
 
+ALTER TABLE product
+ALTER COLUMN created_at SET DEFAULT CURRENT_DATE;
 
+ALTER TABLE product
+ALTER COLUMN updated_at SET DEFAULT CURRENT_DATE;
