@@ -30,8 +30,8 @@ public class ProductManager {
             preparedStatement.setString (2, brand);
             preparedStatement.setString (3, category);
             preparedStatement.setString (4, gender);
-            preparedStatement.setDouble(5, costPrice);
-            preparedStatement.setDouble(6, sellingPrice);
+            preparedStatement.setDouble (5, costPrice);
+            preparedStatement.setDouble (6, sellingPrice);
 
             int rows = preparedStatement.executeUpdate();
 
