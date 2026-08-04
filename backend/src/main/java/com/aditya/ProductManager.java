@@ -3,6 +3,7 @@ package com.aditya;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class ProductManager {
 
@@ -42,5 +43,59 @@ public class ProductManager {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getProductById (int productId) {
+
+        String sql = """
+                SELECT * 
+                FROM Product
+                WHERE product_id = ?
+                """;
+        
+        try (Connection connection = DatabaseConnection.connect() ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                
+                preparedStatement.setInt (1, productId);
+                
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+
+                System.out.println("Product ID: "
+                        + resultSet.getInt("product_id"));
+
+                System.out.println("Product Name: "
+                        + resultSet.getString("product_name"));
+
+                System.out.println("Brand: "
+                        + resultSet.getString("product_brand"));
+
+                System.out.println("Category: "
+                        + resultSet.getString("product_category"));
+
+                System.out.println("Gender: "
+                        + resultSet.getString("gender"));
+
+                System.out.println("Cost Price: "
+                        + resultSet.getDouble("cost_price"));
+
+                System.out.println("Selling Price: "
+                        + resultSet.getDouble("selling_price"));
+
+                System.out.println("Created At: "
+                        + resultSet.getDate("created_at"));
+
+                System.out.println("Updated At: "
+                        + resultSet.getDate("updated_at"));
+
+            } else {
+                System.out.println("Product not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

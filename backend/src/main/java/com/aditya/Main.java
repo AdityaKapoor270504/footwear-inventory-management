@@ -19,6 +19,8 @@ public class Main {
                 4000,
                 6000
         );
+
+        productManager.getProductById(1);
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {
