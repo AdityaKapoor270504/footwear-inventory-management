@@ -98,4 +98,33 @@ public class ProductManager {
         }
 
     }
+
+    public void updateProductPrice (int productId, double sellingPrice) {
+
+        String sql = """
+                UPDATE Product
+                SET selling_price = ?
+                WHERE product_id = ?
+                """;
+        
+        try (Connection connection = DatabaseConnection.connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+                preparedStatement.setDouble (1, sellingPrice);
+                preparedStatement.setInt (2, productId);
+
+                int rows = preparedStatement.executeUpdate();
+
+                if (rows > 0) {
+                        System.out.println ("Product details updated successfully");
+                }
+                
+                else  {
+                        System.out.println ("Product not found");
+                }
+                
+        } catch (SQLException e) {
+             e.printStackTrace();
+        }                
+    }
 }

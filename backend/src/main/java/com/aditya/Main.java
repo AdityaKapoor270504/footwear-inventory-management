@@ -11,16 +11,12 @@ public class Main {
         DatabaseConnection.connect();
         ProductManager productManager = new ProductManager();
 
-        productManager.addProduct(
-                "Nike Air Max",
-                "Nike",
-                "Sports Shoes",
-                "M",
-                4000,
-                6000
-        );
+        productManager.getProductById(1);
+
+        productManager.updateProductPrice(1, 3800.00);
 
         productManager.getProductById(1);
+
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {
