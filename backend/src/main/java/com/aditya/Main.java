@@ -53,7 +53,40 @@ public class Main {
 
         productManager.addProducts(products);
 
-        productManager.getProductById(1);
+        System.out.print ("Enter number of product variants : ");
+
+        int numberOfVariants = sc.nextInt();
+        sc.nextLine();
+
+        List <ProductVariant> productVariants = new ArrayList<>();
+
+        for (int i = 1; i <= numberOfVariants; i++) {
+
+             System.out.println("\nEnter details for variant " + i);
+
+            System.out.print("Enter product ID: ");
+            int productId = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter size of product: ");
+            String sizeOfProduct = sc.nextLine();
+
+            System.out.print("Enter colour: ");
+            String colour = sc.nextLine();
+
+            ProductVariant variant = new ProductVariant(
+                    productId,
+                    sizeOfProduct,
+                    colour
+            );
+
+            productVariants.add (variant);
+
+        }
+
+        ProductVariantManager productVariantManager = new ProductVariantManager();
+
+        productVariantManager.addProductVariant(productVariants);
 
         try (Connection connection = DatabaseConnection.connect()) {
 
