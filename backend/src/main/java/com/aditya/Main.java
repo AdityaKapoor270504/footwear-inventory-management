@@ -7,9 +7,9 @@ public class Main {
     
     public static void main(String[] args) {
 
-
-        DatabaseConnection.connect();
         ProductManager productManager = new ProductManager();
+
+        productManager.addProduct("Nike Air Force 1", "Nike", "sneakers", "M", 3800.00, 5000.0);
 
         productManager.getProductById(1);
 

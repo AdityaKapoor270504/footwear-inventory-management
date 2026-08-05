@@ -10,21 +10,10 @@ public class DatabaseConnection {
     
     public static final String USERNAME = "postgres";
 
-    public static final String password = "Aditya2004";
+    public static final String PASSWORD = "Aditya2004";
 
-    public static Connection connect() {
+    public static Connection connect() throws SQLException {
 
-        try {
-            
-            Connection connection = DriverManager.getConnection (URL, USERNAME, password);
-
-            System.out.println ("Connection was successful");
-
-            return connection;
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return DriverManager.getConnection (URL, USERNAME, PASSWORD);
     }
 }
