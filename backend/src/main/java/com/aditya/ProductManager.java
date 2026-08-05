@@ -4,15 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.*;
 
 public class ProductManager {
 
-    public void addProduct (String productName,
-                            String brand,
-                            String category,
-                            String gender,
-                            double costPrice,
-                            double sellingPrice) {
+    public void addProducts (List <Product> products) {
         
         String sql = """
                 INSERT INTO Product
@@ -21,28 +17,33 @@ public class ProductManager {
                 product_category,
                 gender,
                 cost_price,
-                selling_price)
-                VALUES (?, ?, ?, ?, ?, ?)
+                selling_price)        
                 """;
+
         try (Connection connection = DatabaseConnection.connect();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setString (1, productName);
-            preparedStatement.setString (2, brand);
-            preparedStatement.setString (3, category);
-            preparedStatement.setString (4, gender);
-            preparedStatement.setDouble (5, costPrice);
-            preparedStatement.setDouble (6, sellingPrice);
+        for (Product product : products) {
 
-            int rows = preparedStatement.executeUpdate();
+                preparedStatement.setString (1, product.getProductName());
+                preparedStatement.setString (2, product.getProductBrand());        
+                preparedStatement.setString (3, product.getProductCategory());
+                preparedStatement.setString (4, product.getGender());
+                preparedStatement.setDouble (5, product.getCostPrice());
+                preparedStatement.setDouble (6, product.getSellingPrice());
+                
+                preparedStatement.addBatch();
 
-            if (rows > 0) {
-                System.out.println ("Product added successfully.");
-            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        int result [] = preparedStatement.executeBatch();
+        
+        System.out.println(result.length + " products added successfully.");
+
+        } catch (SQLException e) {
+                e.getStackTrace();
+        }      
+
     }
 
     public void getProductById (int productId) {
