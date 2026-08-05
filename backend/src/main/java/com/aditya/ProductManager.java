@@ -127,4 +127,30 @@ public class ProductManager {
              e.printStackTrace();
         }                
     }
+
+    public void deleteProduct (int productId) {
+
+        String sql = """
+                     DELETE FROM Product
+                     WHERE product_id = ?   
+                     """;
+        try (Connection connection = DatabaseConnection.connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+                preparedStatement.setInt (1, productId);
+
+                int rows = preparedStatement.executeUpdate();
+                
+                if (rows > 0) {
+                        System.out.println ("Product deleted successfully.");
+                }
+
+                else {
+                        System.out.println ("Product not found.");
+                }
+        
+        } catch (SQLException e) {
+              e.printStackTrace();
+        }
+    }
 }

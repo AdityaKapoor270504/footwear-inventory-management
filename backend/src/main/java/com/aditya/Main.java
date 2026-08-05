@@ -13,10 +13,6 @@ public class Main {
 
         productManager.getProductById(1);
 
-        productManager.updateProductPrice(1, 3800.00);
-
-        productManager.getProductById(1);
-
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {
