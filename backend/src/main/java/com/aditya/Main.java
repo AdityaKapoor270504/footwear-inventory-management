@@ -84,6 +84,26 @@ public class Main {
 
         }
 
+        int productId;
+
+        System.out.print ("Enter the id of the product whose details you wish to view : ");
+        productId = sc.nextInt();
+
+        productManager.getProductById (productId);
+        sc.nextLine();
+
+        int updateProductId;
+        double updatedSellingPrice;
+        System.out.print ("Enter the id of the product whose selling price you wish to modify : ");
+        updateProductId = sc.nextInt();
+        
+        System.out.print ("Enter the updated selling price : ");
+        updatedSellingPrice = sc.nextDouble();
+
+        sc.nextLine();
+
+        productManager.updateProductPrice (updateProductId, updatedSellingPrice);
+
         ProductVariantManager productVariantManager = new ProductVariantManager();
 
         productVariantManager.addProductVariant(productVariants);
