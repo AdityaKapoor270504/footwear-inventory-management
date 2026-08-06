@@ -53,6 +53,26 @@ public class Main {
 
         productManager.addProducts(products);
 
+        int viewproductId;
+
+        System.out.print ("Enter the id of the product whose details you wish to view : ");
+        viewproductId = sc.nextInt();
+
+        productManager.getProductById (viewproductId);
+        sc.nextLine();
+
+        int updateProductId;
+        double updatedSellingPrice;
+        System.out.print ("Enter the id of the product whose selling price you wish to modify : ");
+        updateProductId = sc.nextInt();
+        
+        System.out.print ("Enter the updated selling price : ");
+        updatedSellingPrice = sc.nextDouble();
+
+        sc.nextLine();
+
+        productManager.updateProductPrice (updateProductId, updatedSellingPrice);
+
         System.out.print ("Enter number of product variants : ");
 
         int numberOfVariants = sc.nextInt();
@@ -62,7 +82,7 @@ public class Main {
 
         for (int i = 1; i <= numberOfVariants; i++) {
 
-             System.out.println("\nEnter details for variant " + i);
+            System.out.println("\nEnter details for variant " + i);
 
             System.out.print("Enter product ID: ");
             int productId = sc.nextInt();
@@ -84,29 +104,36 @@ public class Main {
 
         }
 
-        int productId;
-
-        System.out.print ("Enter the id of the product whose details you wish to view : ");
-        productId = sc.nextInt();
-
-        productManager.getProductById (productId);
-        sc.nextLine();
-
-        int updateProductId;
-        double updatedSellingPrice;
-        System.out.print ("Enter the id of the product whose selling price you wish to modify : ");
-        updateProductId = sc.nextInt();
-        
-        System.out.print ("Enter the updated selling price : ");
-        updatedSellingPrice = sc.nextDouble();
-
-        sc.nextLine();
-
-        productManager.updateProductPrice (updateProductId, updatedSellingPrice);
-
         ProductVariantManager productVariantManager = new ProductVariantManager();
 
         productVariantManager.addProductVariant(productVariants);
+
+        int variantId;
+
+        System.out.print("Enter the ID of the product variant whose details you wish to view: ");
+        variantId = sc.nextInt();
+
+        productVariantManager.getProductVariantById(variantId);
+
+        int updatevariantId;
+        String updatedSize;
+        String updatedColour;
+
+        System.out.print("Enter the ID of the product variant you wish to correct: ");
+        updatevariantId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter the corrected size: ");
+        updatedSize = sc.nextLine();
+
+        System.out.print("Enter the corrected colour: ");
+        updatedColour = sc.nextLine();
+
+        productVariantManager.updateProductVariant(
+                updatevariantId,
+                updatedSize,
+                updatedColour
+        );
 
         try (Connection connection = DatabaseConnection.connect()) {
 
