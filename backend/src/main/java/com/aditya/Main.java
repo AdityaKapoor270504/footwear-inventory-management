@@ -162,6 +162,11 @@ public class Main {
 
         inventoryManager.addInventory(inventoryList);
 
+        System.out.print("Enter the variant ID whose inventory you wish to view: ");
+        variantId = sc.nextInt();
+
+        inventoryManager.viewInventory(variantId);
+
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {
