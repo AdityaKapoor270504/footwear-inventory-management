@@ -29,7 +29,7 @@ public class InventoryManager {
 
             int result [] = preparedStatement.executeBatch();
             
-            System.out.println (result.length + " products added successfully.");
+            System.out.println (result.length + " inventory records added successfully.");
         } catch (SQLException e) {
             e.getStackTrace();
         }
