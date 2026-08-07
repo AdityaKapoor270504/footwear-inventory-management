@@ -135,6 +135,33 @@ public class Main {
                 updatedColour
         );
 
+        InventoryManager inventoryManager = new InventoryManager();
+
+        List<Inventory> inventoryList = new ArrayList<>();
+
+        System.out.print("Enter number of inventory records: ");
+        int numberOfRecords = sc.nextInt();
+
+        for (int i = 1; i <= numberOfRecords; i++) {
+
+            System.out.println("\nEnter details for inventory " + i);
+
+            System.out.print("Enter variant ID: ");
+            variantId = sc.nextInt();
+
+            System.out.print("Enter quantity in stock: ");
+            int quantityInStock = sc.nextInt();
+
+            Inventory inventory = new Inventory(
+                    variantId,
+                    quantityInStock
+            );
+
+            inventoryList.add(inventory);
+        }
+
+        inventoryManager.addInventory(inventoryList);
+
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {

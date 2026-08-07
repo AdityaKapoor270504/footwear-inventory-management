@@ -125,3 +125,9 @@ DROP CONSTRAINT product_variant_size_of_product_check;
 ALTER TABLE product_variant
 ALTER COLUMN size_of_product TYPE VARCHAR(20)
 USING size_of_product::VARCHAR;
+
+ALTER TABLE Inventory
+ALTER COLUMN created_at SET DEFAULT CURRENT_DATE;
+
+ALTER TABLE Inventory
+ALTER COLUMN updated_at SET DEFAULT CURRENT_DATE;
