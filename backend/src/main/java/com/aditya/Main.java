@@ -202,6 +202,42 @@ public class Main {
 
         customerManager.getCustomerById(customerId);
 
+        List<Supplier> supplierList = new ArrayList<>();
+
+        System.out.print("Enter number of supplier records: ");
+        int numberOfSuppliers = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 1; i <= numberOfSuppliers; i++) {
+
+            System.out.println("\nEnter details for supplier " + i);
+
+            System.out.print("Enter supplier name: ");
+            String supplierName = sc.nextLine();
+
+            System.out.print("Enter supplier contact number: ");
+            String contactNumber = sc.nextLine();
+
+            System.out.print("Enter supplier mail: ");
+            String supplierMail = sc.nextLine();
+
+            System.out.print("Enter supplier address: ");
+            String supplierAddress = sc.nextLine();
+
+            Supplier supplier = new Supplier(
+                    supplierName,
+                    contactNumber,
+                    supplierMail,
+                    supplierAddress
+            );
+
+            supplierList.add(supplier);
+        }
+
+        SupplierManager supplierManager = new SupplierManager();
+
+        supplierManager.addSupplier(supplierList);
+
         sc.close();
 
         try (Connection connection = DatabaseConnection.connect()) {

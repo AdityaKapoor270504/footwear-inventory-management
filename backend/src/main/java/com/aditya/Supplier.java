@@ -5,7 +5,7 @@ public class Supplier {
     private int supplierId;
     private String supplierName;
     private String supplierContactNumber;
-    private String suppliermail;
+    private String supplierMail;
     private String supplierAddress;
 
     public Supplier (int supplier_Id, String supplier_name, String supplier_contact_number, String supplier_mail, String supplier_address) {
@@ -13,7 +13,7 @@ public class Supplier {
         this.supplierId = supplier_Id;
         this.supplierName = supplier_name;
         this.supplierContactNumber = supplier_contact_number;
-        this.suppliermail = supplier_mail;
+        this.supplierMail = supplier_mail;
         this.supplierAddress = supplier_address;
 
     }
@@ -22,7 +22,7 @@ public class Supplier {
         
         this.supplierName = supplier_name;
         this.supplierContactNumber = supplier_contact_number;
-        this.suppliermail = supplier_mail;
+        this.supplierMail = supplier_mail;
         this.supplierAddress = supplier_address;
 
     }
@@ -40,7 +40,7 @@ public class Supplier {
     }
 
     public String getSupplierMail () {
-        return suppliermail;
+        return supplierMail;
     }    
 
     public String getSupplierAddress () {
