@@ -1,6 +1,7 @@
 package com.aditya;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -41,4 +42,44 @@ public class SupplierManager {
         }
     }
     
+    public void getSupplierById(int supplierId) {
+
+        String sql = """
+                SELECT *
+                FROM Supplier
+                WHERE supplier_id = ?
+                """;
+
+        try (Connection connection = DatabaseConnection.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, supplierId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                System.out.println("Supplier ID: "
+                        + resultSet.getInt("supplier_id"));
+
+                System.out.println("Supplier Name: "
+                        + resultSet.getString("supplier_name"));
+
+                System.out.println("Contact Number: "
+                        + resultSet.getString("supplier_contact_number"));
+
+                System.out.println("Mail: "
+                        + resultSet.getString("supplier_mail"));
+
+                System.out.println("Address: "
+                        + resultSet.getString("supplier_address"));
+
+            } else {
+                System.out.println("Supplier not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

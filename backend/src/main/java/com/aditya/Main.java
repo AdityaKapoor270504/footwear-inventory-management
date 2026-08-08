@@ -1,6 +1,8 @@
 package com.aditya;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 public class Main {
@@ -238,6 +240,11 @@ public class Main {
 
         supplierManager.addSupplier(supplierList);
 
+        System.out.print("Enter supplier ID: ");
+        int supplierId = sc.nextInt();
+
+        supplierManager.getSupplierById(supplierId);
+        
         sc.close();
 
         try (Connection connection = DatabaseConnection.connect()) {
