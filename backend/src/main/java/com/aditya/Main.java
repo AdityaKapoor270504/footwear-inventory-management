@@ -167,6 +167,43 @@ public class Main {
 
         inventoryManager.viewInventory(variantId);
 
+        List<Customer> customerList = new ArrayList<>();
+
+        System.out.print("Enter number of customer records: ");
+        int numberOfCustomers = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 1; i <= numberOfCustomers; i++) {
+
+            System.out.println("\nEnter details for customer " + i);
+
+            System.out.print("Enter customer name: ");
+            String customerName = sc.nextLine();
+
+            System.out.print("Enter the customer's contact number: ");
+            String contactNumber = sc.nextLine();
+
+            Customer customer = new Customer(
+                    customerName,
+                    contactNumber
+            );
+
+            customerList.add(customer);
+        }
+
+        CustomerManager customerManager = new CustomerManager();
+
+        customerManager.addCustomer(customerList);
+
+        int customerId;
+
+        System.out.print("Enter the ID of the customer whose details you wish to view: ");
+        customerId = sc.nextInt();
+
+        customerManager.getCustomerById(customerId);
+
+        sc.close();
+
         try (Connection connection = DatabaseConnection.connect()) {
 
             if (connection != null) {
@@ -176,9 +213,6 @@ public class Main {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        sc.close();
-
     }
 }
 

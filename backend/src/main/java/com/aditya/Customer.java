@@ -13,6 +13,12 @@ public class Customer {
         this.customer_contact_number = customerContactNumber;
     } 
     
+    public Customer(String customerName, String customerContactNumber) {
+
+        this.customer_name = customerName;
+        this.customer_contact_number = customerContactNumber;
+    }
+
     public int getCustomerId () {
         return customer_id;
     }
