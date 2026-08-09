@@ -32,7 +32,7 @@ public class InventoryManager {
             
             System.out.println (result.length + " inventory records added successfully.");
         } catch (SQLException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
     }
