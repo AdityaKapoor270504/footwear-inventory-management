@@ -285,6 +285,41 @@ public class Main {
         int purchaseId = sc.nextInt();
 
         purchaseManager.getPurchaseById(purchaseId);
+
+        List<PurchaseItem> purchaseItemList = new ArrayList<>();
+
+        System.out.print("Enter number of purchase item records: ");
+        int numberOfPurchaseItems = sc.nextInt();
+
+        for (int i = 1; i <= numberOfPurchaseItems; i++) {
+
+            System.out.println("\nEnter details for purchase item " + i);
+
+            System.out.print("Enter purchase ID: ");
+            purchaseId = sc.nextInt();
+
+            System.out.print("Enter quantity: ");
+            int quantity = sc.nextInt();
+
+            System.out.print("Enter variant ID: ");
+            variantId = sc.nextInt();
+
+            System.out.print("Enter cost price: ");
+            double costPrice = sc.nextDouble();
+
+            PurchaseItem purchaseItem = new PurchaseItem(
+                purchaseId,
+                quantity,
+                variantId,
+                costPrice
+            );
+
+            purchaseItemList.add(purchaseItem);
+        }
+
+        PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
+
+        purchaseItemManager.addPurchaseItem(purchaseItemList);
         
         sc.close();
 
