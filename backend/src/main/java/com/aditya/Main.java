@@ -242,6 +242,49 @@ public class Main {
         int supplierId = sc.nextInt();
 
         supplierManager.getSupplierById(supplierId);
+
+        List<Purchase> purchaseList = new ArrayList<>();
+
+        System.out.print("Enter number of purchase records: ");
+        int numberOfPurchases = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 1; i <= numberOfPurchases; i++) {
+
+            System.out.println("\nEnter details for purchase " + i);
+
+            System.out.print("Enter supplier ID: ");
+            supplierId = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter invoice number: ");
+            String invoiceNumber = sc.nextLine();
+
+            System.out.print("Enter payment method: ");
+            String paymentMethod = sc.nextLine();
+
+            System.out.print("Enter total payment amount: ");
+            double totalPaymentAmount = sc.nextDouble();
+            sc.nextLine();
+
+            Purchase purchase = new Purchase(
+                    supplierId,
+                    invoiceNumber,
+                    paymentMethod,
+                    totalPaymentAmount
+            );
+
+            purchaseList.add(purchase);
+        }
+
+        PurchaseManager purchaseManager = new PurchaseManager();
+
+        purchaseManager.addPurchase(purchaseList);
+
+        System.out.print("Enter the ID of the purchase whose details you wish to view: ");
+        int purchaseId = sc.nextInt();
+
+        purchaseManager.getPurchaseById(purchaseId);
         
         sc.close();
 
