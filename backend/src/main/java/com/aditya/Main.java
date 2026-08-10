@@ -369,6 +369,40 @@ public class Main {
         int saleId = sc.nextInt();
 
         saleManager.getSaleById(saleId);
+
+        List<SaleItem> saleItemList = new ArrayList<>();
+
+        System.out.print("Enter number of sale item records: ");
+        int numberOfSaleItems = sc.nextInt();
+
+        for (int i = 1; i <= numberOfSaleItems; i++) {
+
+            System.out.println("\nEnter details for sale item " + i);
+
+            System.out.print("Enter sale ID: ");
+            saleId = sc.nextInt();
+
+            System.out.print("Enter quantity sold: ");
+            int quantity = sc.nextInt();
+
+            System.out.print("Enter variant ID: ");
+            variantId = sc.nextInt();
+
+            System.out.print("Enter selling price: ");
+            double sellingPrice = sc.nextDouble();
+
+            SaleItem saleItem = new SaleItem(
+                    saleId,
+                    quantity,
+                    variantId,
+                    sellingPrice);
+
+            saleItemList.add(saleItem);
+        }
+
+        SaleItemManager saleItemManager = new SaleItemManager();
+
+        saleItemManager.addSaleItem(saleItemList);
         
         sc.close();
 
