@@ -325,6 +325,45 @@ public class Main {
         int purchaseItemId = sc.nextInt();
 
         purchaseItemManager.getPurchaseItemById(purchaseItemId);
+
+        List<Sale> saleList = new ArrayList<>();
+
+        System.out.print("Enter number of sale records: ");
+        int numberOfSales = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 1; i <= numberOfSales; i++) {
+
+            System.out.println("\nEnter details for sale " + i);
+
+            System.out.print("Enter customer ID: ");
+            customerId = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter payment method: ");
+            String paymentMethod = sc.nextLine();
+
+            System.out.print("Enter discount offered: ");
+            double discountOffered = sc.nextDouble();
+
+            System.out.print("Enter total net amount: ");
+            double totalNetAmount = sc.nextDouble();
+
+            sc.nextLine();
+
+            Sale sale = new Sale(
+                        customerId,
+                        paymentMethod,
+                        discountOffered,
+                        totalNetAmount
+            );
+
+            saleList.add(sale);
+        }
+
+        SaleManager saleManager = new SaleManager();
+
+        saleManager.addSale(saleList);
         
         sc.close();
 
