@@ -320,6 +320,11 @@ public class Main {
         PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
 
         purchaseItemManager.addPurchaseItem(purchaseItemList);
+
+        System.out.print("Enter the ID of the purchase item whose details you wish to view: ");
+        int purchaseItemId = sc.nextInt();
+
+        purchaseItemManager.getPurchaseItemById(purchaseItemId);
         
         sc.close();
 
