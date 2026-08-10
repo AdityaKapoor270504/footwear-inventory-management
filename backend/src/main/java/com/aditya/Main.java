@@ -404,6 +404,11 @@ public class Main {
 
         saleItemManager.addSaleItem(saleItemList);
         
+        System.out.print("Enter the ID of the sale item whose details you wish to view: ");
+        int saleItemId = sc.nextInt();
+
+        saleItemManager.getSaleItemById(saleItemId);
+
         sc.close();
 
         try (Connection connection = DatabaseConnection.connect()) {
