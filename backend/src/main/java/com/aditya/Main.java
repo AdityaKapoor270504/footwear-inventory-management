@@ -1,7 +1,5 @@
 package com.aditya;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.*;
 public class Main {
     
@@ -410,16 +408,6 @@ public class Main {
         saleItemManager.getSaleItemById(saleItemId);
 
         sc.close();
-
-        try (Connection connection = DatabaseConnection.connect()) {
-
-            if (connection != null) {
-                System.out.println("Database is ready to use.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
 
