@@ -364,6 +364,11 @@ public class Main {
         SaleManager saleManager = new SaleManager();
 
         saleManager.addSale(saleList);
+
+        System.out.print("Enter the ID of the sale whose details you wish to view: ");
+        int saleId = sc.nextInt();
+
+        saleManager.getSaleById(saleId);
         
         sc.close();
 
