@@ -236,7 +236,7 @@ public class Main {
 
         supplierManager.addSupplier(supplierList);
 
-        System.out.print("Enter supplier ID: ");
+        System.out.print("Enter the ID of the supplier whose details you wish to know: ");
         int supplierId = sc.nextInt();
 
         supplierManager.getSupplierById(supplierId);

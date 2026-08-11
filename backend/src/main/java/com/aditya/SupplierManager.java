@@ -11,10 +11,10 @@ public class SupplierManager {
 
         String sql = """
                      INSERT INTO Supplier
-                     (String supplier_name,
-                      String contact_number,
-                      String email_id,
-                      String supplier_address)
+                     (supplier_name,
+                      contact_number,
+                      email_id,
+                      supplier_address)
                       VALUES (?, ?, ?, ?)
                      """;
 
@@ -34,11 +34,11 @@ public class SupplierManager {
             
             int results[] = preparedStatement.executeBatch();
 
-            System.out.print (results.length + " suppliers added successfully.");
+            System.out.println (results.length + " suppliers added successfully.");
 
         
         } catch (SQLException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
     
@@ -66,10 +66,10 @@ public class SupplierManager {
                         + resultSet.getString("supplier_name"));
 
                 System.out.println("Contact Number: "
-                        + resultSet.getString("supplier_contact_number"));
+                        + resultSet.getString("contact_number"));
 
                 System.out.println("Mail: "
-                        + resultSet.getString("supplier_mail"));
+                        + resultSet.getString("email_id"));
 
                 System.out.println("Address: "
                         + resultSet.getString("supplier_address"));

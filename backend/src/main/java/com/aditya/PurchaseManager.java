@@ -34,7 +34,7 @@ public class PurchaseManager {
 
             int results [] = preparedStatement.executeBatch();
 
-            System.out.println (results.length + "purchases added to the database.");
+            System.out.println (results.length + " purchases added to the database successfully.");
 
         } catch (SQLException e) {
             e.printStackTrace();

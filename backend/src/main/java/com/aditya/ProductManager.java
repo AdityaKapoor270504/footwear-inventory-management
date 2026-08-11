@@ -18,6 +18,7 @@ public class ProductManager {
                 gender,
                 cost_price,
                 selling_price)        
+                VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = DatabaseConnection.connect();
