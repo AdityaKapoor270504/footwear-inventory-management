@@ -1,413 +1,1137 @@
 package com.aditya;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
-    
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    // Managers
+    private static final ProductManager productManager = new ProductManager();
+    private static final ProductVariantManager productVariantManager = new ProductVariantManager();
+    private static final InventoryManager inventoryManager = new InventoryManager();
+    private static final CustomerManager customerManager = new CustomerManager();
+    private static final SupplierManager supplierManager = new SupplierManager();
+    private static final PurchaseManager purchaseManager = new PurchaseManager();
+    private static final PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
+    private static final SaleManager saleManager = new SaleManager();
+    private static final SaleItemManager saleItemManager = new SaleItemManager();
+
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner (System.in);
+        boolean running = true;
 
-        int numberOfProducts;
+        while (running) {
 
-        System.out.print ("Enter the number of products you wish to enter : ");
+            printMainMenu();
 
-        List <Product> products = new ArrayList<>();
+            int choice = readInt("Enter your choice: ");
 
-        numberOfProducts = sc.nextInt();
+            switch (choice) {
 
-        sc.nextLine();
+                case 1:
+                    productMenu();
+                    break;
 
-        for (int i = 1; i <= numberOfProducts; i++) {
+                case 2:
+                    productVariantMenu();
+                    break;
 
-            System.out.println ("\nEnter details for product " + i);
+                case 3:
+                    inventoryMenu();
+                    break;
 
-            System.out.print ("Enter product name : ");
-            String productName = sc.nextLine();
+                case 4:
+                    customerMenu();
+                    break;
 
-            System.out.print ("Enter product brand : ");
-            String productBrand = sc.nextLine();
+                case 5:
+                    supplierMenu();
+                    break;
 
-            System.out.print ("Enter product category : ");
-            String productCategory = sc.nextLine();
+                case 6:
+                    purchaseMenu();
+                    break;
 
-            System.out.print ("Enter gender : ");
-            String gender = sc.nextLine();
+                case 7:
+                    purchaseItemMenu();
+                    break;
 
-            System.out.print ("Enter cost price : ");
-            double costPrice = sc.nextDouble();
+                case 8:
+                    saleMenu();
+                    break;
 
-            System.out.print ("Enter selling price : ");
-            double sellingPrice = sc.nextDouble();
+                case 9:
+                    saleItemMenu();
+                    break;
 
-            sc.nextLine();
+                case 0:
+                    running = false;
+                    System.out.println();
+                    System.out.println("==========================================");
+                    System.out.println("Thank you for using the system.");
+                    System.out.println("==========================================");
+                    break;
 
-            Product product = new Product(productName, productBrand, productCategory, gender, costPrice, sellingPrice);
-
-            products.add (product);
-
+                default:
+                    System.out.println();
+                    System.out.println("Invalid choice.");
+                    System.out.println("Please enter a number between 0 and 9.");
+            }
         }
 
-        ProductManager productManager = new ProductManager();
+        scanner.close();
+    }
 
-        productManager.addProducts(products);
+    // =========================================================
+    // MAIN MENU
+    // =========================================================
 
-        int viewproductId;
+    private static void printMainMenu() {
 
-        System.out.print ("Enter the id of the product whose details you wish to view : ");
-        viewproductId = sc.nextInt();
+        System.out.println();
+        System.out.println("==========================================");
+        System.out.println("       INVENTORY MANAGEMENT SYSTEM");
+        System.out.println("==========================================");
+        System.out.println("1. Products");
+        System.out.println("2. Product Variants");
+        System.out.println("3. Inventory");
+        System.out.println("4. Customers");
+        System.out.println("5. Suppliers");
+        System.out.println("6. Purchases");
+        System.out.println("7. Purchase Items");
+        System.out.println("8. Sales");
+        System.out.println("9. Sale Items");
+        System.out.println("0. Exit");
+        System.out.println("==========================================");
+    }
 
-        productManager.getProductById (viewproductId);
-        sc.nextLine();
+    // =========================================================
+    // PRODUCT MENU
+    // =========================================================
 
-        int updateProductId;
-        double updatedSellingPrice;
-        System.out.print ("Enter the id of the product whose selling price you wish to modify : ");
-        updateProductId = sc.nextInt();
-        
-        System.out.print ("Enter the updated selling price : ");
-        updatedSellingPrice = sc.nextDouble();
+    private static void productMenu() {
 
-        sc.nextLine();
+        boolean back = false;
 
-        productManager.updateProductPrice (updateProductId, updatedSellingPrice);
+        while (!back) {
 
-        System.out.print ("Enter number of product variants : ");
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("              PRODUCT MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Product");
+            System.out.println("3. Update Selling Price");
+            System.out.println("4. Delete Product");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-        int numberOfVariants = sc.nextInt();
-        sc.nextLine();
+            int choice = readInt("Enter your choice: ");
 
-        List <ProductVariant> productVariants = new ArrayList<>();
+            switch (choice) {
 
-        for (int i = 1; i <= numberOfVariants; i++) {
+                case 1:
+                    addProducts();
+                    break;
 
-            System.out.println("\nEnter details for variant " + i);
+                case 2:
+                    viewProduct();
+                    break;
 
-            System.out.print("Enter product ID: ");
-            int productId = sc.nextInt();
-            sc.nextLine();
+                case 3:
+                    updateProductPrice();
+                    break;
 
-            System.out.print("Enter size of product: ");
-            String sizeOfProduct = sc.nextLine();
+                case 4:
+                    deleteProduct();
+                    break;
 
-            System.out.print("Enter colour: ");
-            String colour = sc.nextLine();
+                case 0:
+                    back = true;
+                    break;
 
-            ProductVariant variant = new ProductVariant(
-                    productId,
-                    sizeOfProduct,
-                    colour
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addProducts() {
+
+        int number = readNonNegativeInt(
+                "Enter the number of products you wish to enter: ");
+
+        if (number == 0) {
+            System.out.println("No products added.");
+            return;
+        }
+
+        List<Product> products = new ArrayList<>();
+
+        for (int i = 0; i < number; i++) {
+
+            System.out.println();
+            System.out.println("Enter details for product " + (i + 1));
+
+            String productName =
+                    readString("Enter product name: ");
+
+            String productBrand =
+                    readString("Enter product brand: ");
+
+            String productCategory =
+                    readString("Enter product category: ");
+
+            String gender =
+                    readString("Enter gender (M/F): ").toUpperCase();
+
+            while (!gender.equals("M") && !gender.equals("F")) {
+                System.out.println("Gender must be M or F.");
+                gender = readString("Enter gender (M/F): ").toUpperCase();
+            }
+
+            double costPrice =
+                    readNonNegativeDouble("Enter cost price: ");
+
+            double sellingPrice =
+                    readNonNegativeDouble("Enter selling price: ");
+
+            Product product = new Product(
+                    productName,
+                    productBrand,
+                    productCategory,
+                    gender,
+                    costPrice,
+                    sellingPrice
             );
 
-            productVariants.add (variant);
-
+            products.add(product);
         }
 
-        ProductVariantManager productVariantManager = new ProductVariantManager();
+        productManager.addProducts(products);
+    }
 
-        productVariantManager.addProductVariant(productVariants);
+    private static void viewProduct() {
 
-        int variantId;
+        int productId =
+                readPositiveInt("Enter the product ID: ");
 
-        System.out.print("Enter the ID of the product variant whose details you wish to view: ");
-        variantId = sc.nextInt();
+        productManager.getProductById(productId);
+    }
+
+    private static void updateProductPrice() {
+
+        int productId =
+                readPositiveInt(
+                        "Enter the product ID whose selling price you wish to modify: ");
+
+        double newPrice =
+                readNonNegativeDouble(
+                        "Enter the updated selling price: ");
+
+        productManager.updateProductPrice(productId, newPrice);
+    }
+
+    private static void deleteProduct() {
+
+        int productId =
+                readPositiveInt(
+                        "Enter the product ID you wish to delete: ");
+
+        System.out.println();
+        System.out.println("WARNING: Deleting a product may fail if");
+        System.out.println("product variants still reference it.");
+
+        String confirmation =
+                readString("Are you sure? (Y/N): ").toUpperCase();
+
+        if (confirmation.equals("Y")) {
+
+            productManager.deleteProduct(productId);
+
+        } else {
+
+            System.out.println("Deletion cancelled.");
+        }
+    }
+
+    // =========================================================
+    // PRODUCT VARIANT MENU
+    // =========================================================
+
+    private static void productVariantMenu() {
+
+        boolean back = false;
+
+        while (!back) {
+
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("          PRODUCT VARIANT MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Product Variant");
+            System.out.println("2. View Product Variant");
+            System.out.println("3. Update Product Variant");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
+
+            int choice = readInt("Enter your choice: ");
+
+            switch (choice) {
+
+                case 1:
+                    addProductVariants();
+                    break;
+
+                case 2:
+                    viewProductVariant();
+                    break;
+
+                case 3:
+                    updateProductVariant();
+                    break;
+
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addProductVariants() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of product variants: ");
+
+        if (number == 0) {
+            System.out.println("No product variants added.");
+            return;
+        }
+
+        List<ProductVariant> variants = new ArrayList<>();
+
+        for (int i = 0; i < number; i++) {
+
+            System.out.println();
+            System.out.println(
+                    "Enter details for product variant " + (i + 1));
+
+            int productId =
+                    readPositiveInt("Enter product ID: ");
+
+            String size =
+                    readString("Enter size: ");
+
+            String colour =
+                    readString("Enter colour: ");
+
+            ProductVariant variant =
+                    new ProductVariant(
+                            productId,
+                            size,
+                            colour
+                    );
+
+            variants.add(variant);
+        }
+
+        productVariantManager.addProductVariant(variants);
+    }
+
+    private static void viewProductVariant() {
+
+        int variantId =
+                readPositiveInt(
+                        "Enter the product variant ID: ");
 
         productVariantManager.getProductVariantById(variantId);
+    }
 
-        int updatevariantId;
-        String updatedSize;
-        String updatedColour;
+    private static void updateProductVariant() {
 
-        System.out.print("Enter the ID of the product variant you wish to correct: ");
-        updatevariantId = sc.nextInt();
-        sc.nextLine();
+        int variantId =
+                readPositiveInt(
+                        "Enter the product variant ID you wish to correct: ");
 
-        System.out.print("Enter the corrected size: ");
-        updatedSize = sc.nextLine();
+        String size =
+                readString("Enter the corrected size: ");
 
-        System.out.print("Enter the corrected colour: ");
-        updatedColour = sc.nextLine();
+        String colour =
+                readString("Enter the corrected colour: ");
 
         productVariantManager.updateProductVariant(
-                updatevariantId,
-                updatedSize,
-                updatedColour
+                variantId,
+                size,
+                colour
         );
+    }
 
-        InventoryManager inventoryManager = new InventoryManager();
+    // =========================================================
+    // INVENTORY MENU
+    // =========================================================
+
+    private static void inventoryMenu() {
+
+        boolean back = false;
+
+        while (!back) {
+
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             INVENTORY MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Inventory");
+            System.out.println("2. View Inventory");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
+
+            int choice = readInt("Enter your choice: ");
+
+            switch (choice) {
+
+                case 1:
+                    addInventory();
+                    break;
+
+                case 2:
+                    viewInventory();
+                    break;
+
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addInventory() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of inventory records: ");
+
+        if (number == 0) {
+            System.out.println("No inventory records added.");
+            return;
+        }
 
         List<Inventory> inventoryList = new ArrayList<>();
 
-        System.out.print("Enter number of inventory records: ");
-        int numberOfRecords = sc.nextInt();
+        for (int i = 0; i < number; i++) {
 
-        for (int i = 1; i <= numberOfRecords; i++) {
+            System.out.println();
+            System.out.println(
+                    "Enter details for inventory record " + (i + 1));
 
-            System.out.println("\nEnter details for inventory " + i);
+            int variantId =
+                    readPositiveInt("Enter variant ID: ");
 
-            System.out.print("Enter variant ID: ");
-            variantId = sc.nextInt();
+            int quantity =
+                    readNonNegativeInt(
+                            "Enter quantity in stock: ");
 
-            System.out.print("Enter quantity in stock: ");
-            int quantityInStock = sc.nextInt();
-
-            Inventory inventory = new Inventory(
-                    variantId,
-                    quantityInStock
-            );
+            Inventory inventory =
+                    new Inventory(
+                            variantId,
+                            quantity
+                    );
 
             inventoryList.add(inventory);
         }
 
         inventoryManager.addInventory(inventoryList);
+    }
 
-        System.out.print("Enter the variant ID whose inventory you wish to view: ");
-        variantId = sc.nextInt();
+    private static void viewInventory() {
+
+        int variantId =
+                readPositiveInt(
+                        "Enter the variant ID whose inventory you wish to view: ");
 
         inventoryManager.viewInventory(variantId);
+    }
 
-        List<Customer> customerList = new ArrayList<>();
+    // =========================================================
+    // CUSTOMER MENU
+    // =========================================================
 
-        System.out.print("Enter number of customer records: ");
-        int numberOfCustomers = sc.nextInt();
-        sc.nextLine();
+    private static void customerMenu() {
 
-        for (int i = 1; i <= numberOfCustomers; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for customer " + i);
+        while (!back) {
 
-            System.out.print("Enter customer name: ");
-            String customerName = sc.nextLine();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             CUSTOMER MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Customer");
+            System.out.println("2. View Customer");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter the customer's contact number: ");
-            String contactNumber = sc.nextLine();
+            int choice = readInt("Enter your choice: ");
 
-            Customer customer = new Customer(
-                    customerName,
-                    contactNumber
-            );
+            switch (choice) {
 
-            customerList.add(customer);
+                case 1:
+                    addCustomers();
+                    break;
+
+                case 2:
+                    viewCustomer();
+                    break;
+
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addCustomers() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of customer records: ");
+
+        if (number == 0) {
+            System.out.println("No customers added.");
+            return;
         }
 
-        CustomerManager customerManager = new CustomerManager();
+        List<Customer> customers = new ArrayList<>();
 
-        customerManager.addCustomer(customerList);
+        for (int i = 0; i < number; i++) {
 
-        int customerId;
+            System.out.println();
+            System.out.println(
+                    "Enter details for customer " + (i + 1));
 
-        System.out.print("Enter the ID of the customer whose details you wish to view: ");
-        customerId = sc.nextInt();
+            String name =
+                    readString("Enter customer name: ");
+
+            String contact =
+                    readString(
+                            "Enter customer contact number: ");
+
+            Customer customer =
+                    new Customer(
+                            name,
+                            contact
+                    );
+
+            customers.add(customer);
+        }
+
+        customerManager.addCustomer(customers);
+    }
+
+    private static void viewCustomer() {
+
+        int customerId =
+                readPositiveInt(
+                        "Enter the customer ID whose details you wish to view: ");
 
         customerManager.getCustomerById(customerId);
+    }
 
-        List<Supplier> supplierList = new ArrayList<>();
+    // =========================================================
+    // SUPPLIER MENU
+    // =========================================================
 
-        System.out.print("Enter number of supplier records: ");
-        int numberOfSuppliers = sc.nextInt();
-        sc.nextLine();
+    private static void supplierMenu() {
 
-        for (int i = 1; i <= numberOfSuppliers; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for supplier " + i);
+        while (!back) {
 
-            System.out.print("Enter supplier name: ");
-            String supplierName = sc.nextLine();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             SUPPLIER MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Supplier");
+            System.out.println("2. View Supplier");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter supplier contact number: ");
-            String contactNumber = sc.nextLine();
+            int choice = readInt("Enter your choice: ");
 
-            System.out.print("Enter supplier mail: ");
-            String supplierMail = sc.nextLine();
+            switch (choice) {
 
-            System.out.print("Enter supplier address: ");
-            String supplierAddress = sc.nextLine();
+                case 1:
+                    addSuppliers();
+                    break;
 
-            Supplier supplier = new Supplier(
-                    supplierName,
-                    contactNumber,
-                    supplierMail,
-                    supplierAddress
-            );
+                case 2:
+                    viewSupplier();
+                    break;
 
-            supplierList.add(supplier);
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addSuppliers() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of supplier records: ");
+
+        if (number == 0) {
+            System.out.println("No suppliers added.");
+            return;
         }
 
-        SupplierManager supplierManager = new SupplierManager();
+        List<Supplier> suppliers = new ArrayList<>();
 
-        supplierManager.addSupplier(supplierList);
+        for (int i = 0; i < number; i++) {
 
-        System.out.print("Enter the ID of the supplier whose details you wish to know: ");
-        int supplierId = sc.nextInt();
+            System.out.println();
+            System.out.println(
+                    "Enter details for supplier " + (i + 1));
+
+            String name =
+                    readString("Enter supplier name: ");
+
+            String contact =
+                    readString(
+                            "Enter supplier contact number: ");
+
+            String mail =
+                    readString("Enter supplier mail: ");
+
+            String address =
+                    readString("Enter supplier address: ");
+
+            Supplier supplier =
+                    new Supplier(
+                            name,
+                            contact,
+                            mail,
+                            address
+                    );
+
+            suppliers.add(supplier);
+        }
+
+        supplierManager.addSupplier(suppliers);
+    }
+
+    private static void viewSupplier() {
+
+        int supplierId =
+                readPositiveInt(
+                        "Enter the ID of the supplier whose details you wish to know: ");
 
         supplierManager.getSupplierById(supplierId);
+    }
 
-        List<Purchase> purchaseList = new ArrayList<>();
+    // =========================================================
+    // PURCHASE MENU
+    // =========================================================
 
-        System.out.print("Enter number of purchase records: ");
-        int numberOfPurchases = sc.nextInt();
-        sc.nextLine();
+    private static void purchaseMenu() {
 
-        for (int i = 1; i <= numberOfPurchases; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for purchase " + i);
+        while (!back) {
 
-            System.out.print("Enter supplier ID: ");
-            supplierId = sc.nextInt();
-            sc.nextLine();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             PURCHASE MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Purchase");
+            System.out.println("2. View Purchase");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter invoice number: ");
-            String invoiceNumber = sc.nextLine();
+            int choice = readInt("Enter your choice: ");
 
-            System.out.print("Enter payment method: ");
-            String paymentMethod = sc.nextLine();
+            switch (choice) {
 
-            System.out.print("Enter total payment amount: ");
-            double totalPaymentAmount = sc.nextDouble();
-            sc.nextLine();
+                case 1:
+                    addPurchases();
+                    break;
 
-            Purchase purchase = new Purchase(
-                    supplierId,
-                    invoiceNumber,
-                    paymentMethod,
-                    totalPaymentAmount
-            );
+                case 2:
+                    viewPurchase();
+                    break;
 
-            purchaseList.add(purchase);
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addPurchases() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of purchase records: ");
+
+        if (number == 0) {
+            System.out.println("No purchases added.");
+            return;
         }
 
-        PurchaseManager purchaseManager = new PurchaseManager();
+        List<Purchase> purchases = new ArrayList<>();
 
-        purchaseManager.addPurchase(purchaseList);
+        for (int i = 0; i < number; i++) {
 
-        System.out.print("Enter the ID of the purchase whose details you wish to view: ");
-        int purchaseId = sc.nextInt();
+            System.out.println();
+            System.out.println(
+                    "Enter details for purchase " + (i + 1));
+
+            int supplierId =
+                    readPositiveInt("Enter supplier ID: ");
+
+            String invoiceNumber =
+                    readString("Enter invoice number: ");
+
+            String paymentMethod =
+                    readString("Enter payment method: ");
+
+            double totalAmount =
+                    readNonNegativeDouble(
+                            "Enter total payment amount: ");
+
+            Purchase purchase =
+                    new Purchase(
+                            supplierId,
+                            invoiceNumber,
+                            paymentMethod,
+                            totalAmount
+                    );
+
+            purchases.add(purchase);
+        }
+
+        purchaseManager.addPurchase(purchases);
+    }
+
+    private static void viewPurchase() {
+
+        int purchaseId =
+                readPositiveInt(
+                        "Enter the ID of the purchase whose details you wish to view: ");
 
         purchaseManager.getPurchaseById(purchaseId);
+    }
 
-        List<PurchaseItem> purchaseItemList = new ArrayList<>();
+    // =========================================================
+    // PURCHASE ITEM MENU
+    // =========================================================
 
-        System.out.print("Enter number of purchase item records: ");
-        int numberOfPurchaseItems = sc.nextInt();
+    private static void purchaseItemMenu() {
 
-        for (int i = 1; i <= numberOfPurchaseItems; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for purchase item " + i);
+        while (!back) {
 
-            System.out.print("Enter purchase ID: ");
-            purchaseId = sc.nextInt();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("          PURCHASE ITEM MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Purchase Item");
+            System.out.println("2. View Purchase Item");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter quantity: ");
-            int quantity = sc.nextInt();
+            int choice = readInt("Enter your choice: ");
 
-            System.out.print("Enter variant ID: ");
-            variantId = sc.nextInt();
+            switch (choice) {
 
-            System.out.print("Enter cost price: ");
-            double costPrice = sc.nextDouble();
+                case 1:
+                    addPurchaseItems();
+                    break;
 
-            PurchaseItem purchaseItem = new PurchaseItem(
-                purchaseId,
-                quantity,
-                variantId,
-                costPrice
-            );
+                case 2:
+                    viewPurchaseItem();
+                    break;
 
-            purchaseItemList.add(purchaseItem);
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addPurchaseItems() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of purchase item records: ");
+
+        if (number == 0) {
+            System.out.println("No purchase items added.");
+            return;
         }
 
-        PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
+        List<PurchaseItem> purchaseItems = new ArrayList<>();
 
-        purchaseItemManager.addPurchaseItem(purchaseItemList);
+        for (int i = 0; i < number; i++) {
 
-        System.out.print("Enter the ID of the purchase item whose details you wish to view: ");
-        int purchaseItemId = sc.nextInt();
+            System.out.println();
+            System.out.println(
+                    "Enter details for purchase item " + (i + 1));
+
+            int purchaseId =
+                    readPositiveInt("Enter purchase ID: ");
+
+            int quantity =
+                    readPositiveInt("Enter quantity: ");
+
+            int variantId =
+                    readPositiveInt("Enter variant ID: ");
+
+            double costPrice =
+                    readNonNegativeDouble(
+                            "Enter cost price: ");
+
+            PurchaseItem purchaseItem =
+                    new PurchaseItem(
+                            purchaseId,
+                            quantity,
+                            variantId,
+                            costPrice
+                    );
+
+            purchaseItems.add(purchaseItem);
+        }
+
+        purchaseItemManager.addPurchaseItem(purchaseItems);
+    }
+
+    private static void viewPurchaseItem() {
+
+        int purchaseItemId =
+                readPositiveInt(
+                        "Enter the ID of the purchase item whose details you wish to view: ");
 
         purchaseItemManager.getPurchaseItemById(purchaseItemId);
+    }
 
-        List<Sale> saleList = new ArrayList<>();
+    // =========================================================
+    // SALE MENU
+    // =========================================================
 
-        System.out.print("Enter number of sale records: ");
-        int numberOfSales = sc.nextInt();
-        sc.nextLine();
+    private static void saleMenu() {
 
-        for (int i = 1; i <= numberOfSales; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for sale " + i);
+        while (!back) {
 
-            System.out.print("Enter customer ID: ");
-            customerId = sc.nextInt();
-            sc.nextLine();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("                SALE MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Sale");
+            System.out.println("2. View Sale");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter payment method: ");
-            String paymentMethod = sc.nextLine();
+            int choice = readInt("Enter your choice: ");
 
-            System.out.print("Enter discount offered: ");
-            double discountOffered = sc.nextDouble();
+            switch (choice) {
 
-            System.out.print("Enter total net amount: ");
-            double totalNetAmount = sc.nextDouble();
+                case 1:
+                    addSales();
+                    break;
 
-            sc.nextLine();
+                case 2:
+                    viewSale();
+                    break;
 
-            Sale sale = new Sale(
-                        customerId,
-                        paymentMethod,
-                        discountOffered,
-                        totalNetAmount
-            );
+                case 0:
+                    back = true;
+                    break;
 
-            saleList.add(sale);
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addSales() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of sale records: ");
+
+        if (number == 0) {
+            System.out.println("No sales added.");
+            return;
         }
 
-        SaleManager saleManager = new SaleManager();
+        List<Sale> sales = new ArrayList<>();
 
-        saleManager.addSale(saleList);
+        for (int i = 0; i < number; i++) {
 
-        System.out.print("Enter the ID of the sale whose details you wish to view: ");
-        int saleId = sc.nextInt();
+            System.out.println();
+            System.out.println(
+                    "Enter details for sale " + (i + 1));
+
+            int customerId =
+                    readPositiveInt("Enter customer ID: ");
+
+            String paymentMethod =
+                    readString("Enter payment method: ");
+
+            double discount =
+                    readNonNegativeDouble(
+                            "Enter discount offered: ");
+
+            double totalNetAmount =
+                    readNonNegativeDouble(
+                            "Enter total net amount: ");
+
+            Sale sale =
+                    new Sale(
+                            customerId,
+                            paymentMethod,
+                            discount,
+                            totalNetAmount
+                    );
+
+            sales.add(sale);
+        }
+
+        saleManager.addSale(sales);
+    }
+
+    private static void viewSale() {
+
+        int saleId =
+                readPositiveInt(
+                        "Enter the ID of the sale whose details you wish to view: ");
 
         saleManager.getSaleById(saleId);
+    }
 
-        List<SaleItem> saleItemList = new ArrayList<>();
+    // =========================================================
+    // SALE ITEM MENU
+    // =========================================================
 
-        System.out.print("Enter number of sale item records: ");
-        int numberOfSaleItems = sc.nextInt();
+    private static void saleItemMenu() {
 
-        for (int i = 1; i <= numberOfSaleItems; i++) {
+        boolean back = false;
 
-            System.out.println("\nEnter details for sale item " + i);
+        while (!back) {
 
-            System.out.print("Enter sale ID: ");
-            saleId = sc.nextInt();
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             SALE ITEM MENU");
+            System.out.println("==========================================");
+            System.out.println("1. Add Sale Item");
+            System.out.println("2. View Sale Item");
+            System.out.println("0. Back");
+            System.out.println("==========================================");
 
-            System.out.print("Enter quantity sold: ");
-            int quantity = sc.nextInt();
+            int choice = readInt("Enter your choice: ");
 
-            System.out.print("Enter variant ID: ");
-            variantId = sc.nextInt();
+            switch (choice) {
 
-            System.out.print("Enter selling price: ");
-            double sellingPrice = sc.nextDouble();
+                case 1:
+                    addSaleItems();
+                    break;
 
-            SaleItem saleItem = new SaleItem(
-                    saleId,
-                    quantity,
-                    variantId,
-                    sellingPrice);
+                case 2:
+                    viewSaleItem();
+                    break;
 
-            saleItemList.add(saleItem);
+                case 0:
+                    back = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addSaleItems() {
+
+        int number =
+                readNonNegativeInt(
+                        "Enter the number of sale item records: ");
+
+        if (number == 0) {
+            System.out.println("No sale items added.");
+            return;
         }
 
-        SaleItemManager saleItemManager = new SaleItemManager();
+        List<SaleItem> saleItems = new ArrayList<>();
 
-        saleItemManager.addSaleItem(saleItemList);
-        
-        System.out.print("Enter the ID of the sale item whose details you wish to view: ");
-        int saleItemId = sc.nextInt();
+        for (int i = 0; i < number; i++) {
+
+            System.out.println();
+            System.out.println(
+                    "Enter details for sale item " + (i + 1));
+
+            int saleId =
+                    readPositiveInt("Enter sale ID: ");
+
+            int quantity =
+                    readPositiveInt("Enter quantity sold: ");
+
+            int variantId =
+                    readPositiveInt("Enter variant ID: ");
+
+            double sellingPrice =
+                    readNonNegativeDouble(
+                            "Enter selling price: ");
+
+            SaleItem saleItem =
+                    new SaleItem(
+                            saleId,
+                            quantity,
+                            variantId,
+                            sellingPrice
+                    );
+
+            saleItems.add(saleItem);
+        }
+
+        saleItemManager.addSaleItem(saleItems);
+    }
+
+    private static void viewSaleItem() {
+
+        int saleItemId =
+                readPositiveInt(
+                        "Enter the ID of the sale item whose details you wish to view: ");
 
         saleItemManager.getSaleItemById(saleItemId);
+    }
 
-        sc.close();
+    // =========================================================
+    // INPUT METHODS
+    // =========================================================
+
+    private static String readString(String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String input = scanner.nextLine().trim();
+
+            if (!input.isEmpty()) {
+                return input;
+            }
+
+            System.out.println("Input cannot be empty.");
+        }
+    }
+
+    private static int readInt(String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String input = scanner.nextLine().trim();
+
+            try {
+
+                return Integer.parseInt(input);
+
+            } catch (NumberFormatException e) {
+
+                System.out.println(
+                        "Invalid input. Please enter a valid integer.");
+            }
+        }
+    }
+
+    private static int readPositiveInt(String message) {
+
+        while (true) {
+
+            int value = readInt(message);
+
+            if (value > 0) {
+                return value;
+            }
+
+            System.out.println(
+                    "Please enter a number greater than 0.");
+        }
+    }
+
+    private static int readNonNegativeInt(String message) {
+
+        while (true) {
+
+            int value = readInt(message);
+
+            if (value >= 0) {
+                return value;
+            }
+
+            System.out.println(
+                    "Please enter 0 or a positive number.");
+        }
+    }
+
+    private static double readDouble(String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String input = scanner.nextLine().trim();
+
+            try {
+
+                return Double.parseDouble(input);
+
+            } catch (NumberFormatException e) {
+
+                System.out.println(
+                        "Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
+    private static double readNonNegativeDouble(String message) {
+
+        while (true) {
+
+            double value = readDouble(message);
+
+            if (value >= 0) {
+                return value;
+            }
+
+            System.out.println(
+                    "Please enter 0 or a positive number.");
+        }
     }
 }
-
