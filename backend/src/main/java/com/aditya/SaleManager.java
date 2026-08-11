@@ -18,8 +18,8 @@ public class SaleManager {
                    VALUES (?, ?, ?, ?)
                    """;
 
-        try (Connection connnection = DatabaseConnection.connect();
-                PreparedStatement preparedStatement = connnection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.connect();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             for (Sale sale : sales) {
 
