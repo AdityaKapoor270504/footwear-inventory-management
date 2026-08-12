@@ -35,6 +35,15 @@ public class PurchaseItemManager {
 
             System.out.println (results.length + " purchase items added successfully.");
 
+            InventoryManager inventoryManager = new InventoryManager();
+
+            for (PurchaseItem purchaseItem : purchaseitems) {
+
+                inventoryManager.increaseStock(
+                        purchaseItem.getVariantId(),
+                        purchaseItem.getQuantity());
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

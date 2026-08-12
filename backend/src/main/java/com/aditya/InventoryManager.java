@@ -82,7 +82,8 @@ public class InventoryManager {
 
         String sql = """
                 UPDATE Inventory
-                SET quantity_in_stock = quantity_in_stock + ?
+                SET quantity_in_stock = quantity_in_stock + ?,
+                    updated_at = CURRENT_DATE
                 WHERE variant_id = ?
                 """;
 
