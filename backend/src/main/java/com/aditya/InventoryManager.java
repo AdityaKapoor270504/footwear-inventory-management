@@ -77,32 +77,4 @@ public class InventoryManager {
             e.printStackTrace();
         }
     }    
-
-    public void increaseStock(int variantId, int quantityPurchased) {
-
-        String sql = """
-                UPDATE Inventory
-                SET quantity_in_stock = quantity_in_stock + ?,
-                    updated_at = CURRENT_DATE
-                WHERE variant_id = ?
-                """;
-
-        try (Connection connection = DatabaseConnection.connect();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, quantityPurchased);
-            preparedStatement.setInt(2, variantId);
-
-            int result = preparedStatement.executeUpdate();
-
-            if (result > 0) {
-                System.out.println("Inventory updated successfully.");
-            } else {
-                System.out.println("Inventory record not found.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
