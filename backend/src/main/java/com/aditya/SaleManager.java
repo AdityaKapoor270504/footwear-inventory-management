@@ -8,98 +8,301 @@ import java.util.List;
 
 public class SaleManager {
 
-    public void addSale(List<Sale> sales) {
+        // =========================================================
+        // CREATE COMPLETE SALE
+        // =========================================================
 
-        String sql = """
-                INSERT INTO Sale
-                (customer_id,
-                 payment_method,
-                 discount_percentage,
-                 total_net_amount)
-                VALUES (?, ?, ?, ?)
-                """;
+        public int createSale(Sale sale, List<SaleItem> saleItems) {
 
-        try (
-                Connection connection = DatabaseConnection.connect();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                String saleSql = """
+                                INSERT INTO Sale
+                                (customer_id,
+                                 payment_method,
+                                 discount_percentage,
+                                 total_net_amount)
+                                VALUES (?, ?, ?, ?)
+                                RETURNING sale_id
+                                """;
 
-            for (Sale sale : sales) {
+                String saleItemSql = """
+                                INSERT INTO Sale_Item
+                                (sale_id,
+                                 quantity,
+                                 variant_id,
+                                 selling_price)
+                                VALUES (?, ?, ?, ?)
+                                """;
 
-                preparedStatement.setInt(
-                        1,
-                        sale.getCustomerId());
+                String inventorySql = """
+                                UPDATE Inventory
+                                SET quantity_in_stock = quantity_in_stock - ?,
+                                    updated_at = CURRENT_DATE
+                                WHERE variant_id = ?
+                                  AND quantity_in_stock >= ?
+                                """;
 
-                preparedStatement.setString(
-                        2,
-                        sale.getPaymentMethod());
+                Connection connection = null;
 
-                preparedStatement.setDouble(
-                        3,
-                        sale.getDiscountPercentage());
+                try {
 
-                preparedStatement.setDouble(
-                        4,
-                        sale.getTotalNetAmount());
+                        // =================================================
+                        // STEP 1: CONNECT TO DATABASE
+                        // =================================================
 
-                preparedStatement.addBatch();
-            }
+                        connection = DatabaseConnection.connect();
 
-            int[] results = preparedStatement.executeBatch();
+                        // Turn off auto-commit
+                        connection.setAutoCommit(false);
 
-            System.out.println(
-                    results.length + " sales added successfully.");
+                        // =================================================
+                        // STEP 2: CREATE SALE
+                        // =================================================
 
-        } catch (SQLException e) {
+                        int saleId;
 
-            e.printStackTrace();
+                        try (PreparedStatement saleStatement = connection.prepareStatement(saleSql)) {
+
+                                saleStatement.setInt(
+                                                1,
+                                                sale.getCustomerId());
+
+                                saleStatement.setString(
+                                                2,
+                                                sale.getPaymentMethod());
+
+                                saleStatement.setDouble(
+                                                3,
+                                                sale.getDiscountPercentage());
+
+                                saleStatement.setDouble(
+                                                4,
+                                                sale.getTotalNetAmount());
+
+                                ResultSet resultSet = saleStatement.executeQuery();
+
+                                if (!resultSet.next()) {
+
+                                        throw new SQLException(
+                                                        "Sale could not be created.");
+                                }
+
+                                saleId = resultSet.getInt("sale_id");
+                        }
+
+                        // =================================================
+                        // STEP 3: ADD SALE ITEMS
+                        // =================================================
+
+                        try (PreparedStatement saleItemStatement = connection.prepareStatement(saleItemSql)) {
+
+                                for (SaleItem saleItem : saleItems) {
+
+                                        saleItemStatement.setInt(
+                                                        1,
+                                                        saleId);
+
+                                        saleItemStatement.setInt(
+                                                        2,
+                                                        saleItem.getQuantitySold());
+
+                                        saleItemStatement.setInt(
+                                                        3,
+                                                        saleItem.getVariantId());
+
+                                        saleItemStatement.setDouble(
+                                                        4,
+                                                        saleItem.getSellingPrice());
+
+                                        saleItemStatement.addBatch();
+                                }
+
+                                saleItemStatement.executeBatch();
+                        }
+
+                        // =================================================
+                        // STEP 4: UPDATE INVENTORY
+                        // =================================================
+
+                        try (PreparedStatement inventoryStatement = connection.prepareStatement(inventorySql)) {
+
+                                for (SaleItem saleItem : saleItems) {
+
+                                        inventoryStatement.setInt(
+                                                        1,
+                                                        saleItem.getQuantitySold());
+
+                                        inventoryStatement.setInt(
+                                                        2,
+                                                        saleItem.getVariantId());
+
+                                        inventoryStatement.setInt(
+                                                        3,
+                                                        saleItem.getQuantitySold());
+
+                                        int rows = inventoryStatement.executeUpdate();
+
+                                        /*
+                                         * If no row was updated:
+                                         *
+                                         * - Inventory record does not exist
+                                         * OR
+                                         * - There is insufficient stock
+                                         */
+
+                                        if (rows == 0) {
+
+                                                throw new SQLException(
+                                                                "Insufficient stock or inventory record "
+                                                                                + "not found for variant ID: "
+                                                                                + saleItem.getVariantId());
+                                        }
+                                }
+                        }
+
+                        // =================================================
+                        // STEP 5: COMMIT EVERYTHING
+                        // =================================================
+
+                        connection.commit();
+
+                        System.out.println();
+                        System.out.println(
+                                        "==========================================");
+                        System.out.println(
+                                        "          SALE COMPLETED");
+                        System.out.println(
+                                        "==========================================");
+                        System.out.println(
+                                        "Sale ID: " + saleId);
+                        System.out.println(
+                                        "Sale items added successfully.");
+                        System.out.println(
+                                        "Inventory updated successfully.");
+                        System.out.println(
+                                        "==========================================");
+
+                        return saleId;
+
+                } catch (SQLException e) {
+
+                        // =================================================
+                        // ROLLBACK EVERYTHING
+                        // =================================================
+
+                        if (connection != null) {
+
+                                try {
+
+                                        connection.rollback();
+
+                                        System.out.println();
+                                        System.out.println(
+                                                        "Sale transaction failed.");
+                                        System.out.println(
+                                                        "All changes have been rolled back.");
+
+                                } catch (SQLException rollbackException) {
+
+                                        rollbackException.printStackTrace();
+                                }
+                        }
+
+                        e.printStackTrace();
+
+                        return -1;
+
+                } finally {
+
+                        // =================================================
+                        // CLOSE CONNECTION
+                        // =================================================
+
+                        if (connection != null) {
+
+                                try {
+
+                                        connection.close();
+
+                                } catch (SQLException e) {
+
+                                        e.printStackTrace();
+                                }
+                        }
+                }
         }
-    }
 
-    public void getSaleById(int saleId) {
+        // =========================================================
+        // VIEW SALE
+        // =========================================================
 
-        String sql = """
-                SELECT *
-                FROM Sale
-                WHERE sale_id = ?
-                """;
+        public void getSaleById(int saleId) {
 
-        try (
-                Connection connection = DatabaseConnection.connect();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                String sql = """
+                                SELECT *
+                                FROM Sale
+                                WHERE sale_id = ?
+                                """;
 
-            preparedStatement.setInt(1, saleId);
+                try (
+                                Connection connection = DatabaseConnection.connect();
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+                                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            if (resultSet.next()) {
+                        preparedStatement.setInt(
+                                        1,
+                                        saleId);
 
-                System.out.println("Sale ID: "
-                        + resultSet.getInt("sale_id"));
+                        ResultSet resultSet = preparedStatement.executeQuery();
 
-                System.out.println("Customer ID: "
-                        + resultSet.getInt("customer_id"));
+                        if (resultSet.next()) {
 
-                System.out.println("Sale Date: "
-                        + resultSet.getDate("sale_date"));
+                                System.out.println();
+                                System.out.println(
+                                                "==========================================");
+                                System.out.println(
+                                                "              SALE DETAILS");
+                                System.out.println(
+                                                "==========================================");
 
-                System.out.println("Payment Method: "
-                        + resultSet.getString("payment_method"));
+                                System.out.println(
+                                                "Sale ID: "
+                                                                + resultSet.getInt("sale_id"));
 
-                System.out.println("Discount Percentage: "
-                        + resultSet.getDouble("discount_percentage")
-                        + "%");
+                                System.out.println(
+                                                "Customer ID: "
+                                                                + resultSet.getInt("customer_id"));
 
-                System.out.println("Total Net Amount: ₹"
-                        + resultSet.getDouble("total_net_amount"));
+                                System.out.println(
+                                                "Sale Date: "
+                                                                + resultSet.getDate("sale_date"));
 
-            } else {
+                                System.out.println(
+                                                "Payment Method: "
+                                                                + resultSet.getString("payment_method"));
 
-                System.out.println("Sale not found.");
-            }
+                                System.out.println(
+                                                "Discount Percentage: "
+                                                                + resultSet.getDouble(
+                                                                                "discount_percentage")
+                                                                + "%");
 
-        } catch (SQLException e) {
+                                System.out.println(
+                                                "Total Net Amount: ₹"
+                                                                + resultSet.getDouble(
+                                                                                "total_net_amount"));
 
-            e.printStackTrace();
+                                System.out.println(
+                                                "==========================================");
+
+                        } else {
+
+                                System.out.println(
+                                                "Sale not found.");
+                        }
+
+                } catch (SQLException e) {
+
+                        e.printStackTrace();
+                }
         }
-    }
 }

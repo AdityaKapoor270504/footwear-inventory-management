@@ -17,7 +17,6 @@ public class Main {
     private static final PurchaseManager purchaseManager = new PurchaseManager();
     private static final PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
     private static final SaleManager saleManager = new SaleManager();
-    private static final SaleItemManager saleItemManager = new SaleItemManager();
 
     public static void main(String[] args) {
 
@@ -63,10 +62,6 @@ public class Main {
                     saleMenu();
                     break;
 
-                case 9:
-                    saleItemMenu();
-                    break;
-
                 case 0:
                     running = false;
 
@@ -79,7 +74,7 @@ public class Main {
                 default:
                     System.out.println();
                     System.out.println("Invalid choice.");
-                    System.out.println("Please enter a number between 0 and 9.");
+                    System.out.println("Please enter a number between 0 and 8.");
             }
         }
 
@@ -104,7 +99,6 @@ public class Main {
         System.out.println("6. Purchases");
         System.out.println("7. Purchase Items");
         System.out.println("8. Sales");
-        System.out.println("9. Sale Items");
         System.out.println("0. Exit");
         System.out.println("==========================================");
     }
@@ -183,14 +177,15 @@ public class Main {
 
             String productCategory = readString("Enter product category: ");
 
-            String gender = readString("Enter gender (M/F): ").toUpperCase();
+            String gender = readString("Enter gender (M/F): ")
+                    .toUpperCase();
 
             while (!gender.equals("M") && !gender.equals("F")) {
 
                 System.out.println("Gender must be M or F.");
 
-                gender = readString(
-                        "Enter gender (M/F): ").toUpperCase();
+                gender = readString("Enter gender (M/F): ")
+                        .toUpperCase();
             }
 
             double costPrice = readNonNegativeDouble(
@@ -224,7 +219,8 @@ public class Main {
     private static void updateProductPrice() {
 
         int productId = readPositiveInt(
-                "Enter the product ID whose selling price you wish to modify: ");
+                "Enter the product ID whose selling price "
+                        + "you wish to modify: ");
 
         double newPrice = readNonNegativeDouble(
                 "Enter the updated selling price: ");
@@ -246,7 +242,8 @@ public class Main {
                 "product variants still reference it.");
 
         String confirmation = readString(
-                "Are you sure? (Y/N): ").toUpperCase();
+                "Are you sure? (Y/N): ")
+                .toUpperCase();
 
         if (confirmation.equals("Y")) {
 
@@ -310,7 +307,10 @@ public class Main {
                 "Enter the number of product variants: ");
 
         if (number == 0) {
-            System.out.println("No product variants added.");
+
+            System.out.println(
+                    "No product variants added.");
+
             return;
         }
 
@@ -338,8 +338,7 @@ public class Main {
             variants.add(variant);
         }
 
-        productVariantManager.addProductVariant(
-                variants);
+        productVariantManager.addProductVariant(variants);
     }
 
     private static void viewProductVariant() {
@@ -354,7 +353,8 @@ public class Main {
     private static void updateProductVariant() {
 
         int variantId = readPositiveInt(
-                "Enter the product variant ID you wish to correct: ");
+                "Enter the product variant ID "
+                        + "you wish to correct: ");
 
         String size = readString(
                 "Enter the corrected size: ");
@@ -415,8 +415,10 @@ public class Main {
                 "Enter the number of inventory records: ");
 
         if (number == 0) {
+
             System.out.println(
                     "No inventory records added.");
+
             return;
         }
 
@@ -442,17 +444,16 @@ public class Main {
             inventoryList.add(inventory);
         }
 
-        inventoryManager.addInventory(
-                inventoryList);
+        inventoryManager.addInventory(inventoryList);
     }
 
     private static void viewInventory() {
 
         int productId = readPositiveInt(
-                "Enter the product ID whose inventory you wish to view: ");
+                "Enter the product ID whose inventory "
+                        + "you wish to view: ");
 
-        inventoryManager.viewInventory(
-                productId);
+        inventoryManager.viewInventory(productId);
     }
 
     // =========================================================
@@ -502,7 +503,10 @@ public class Main {
                 "Enter the number of customer records: ");
 
         if (number == 0) {
-            System.out.println("No customers added.");
+
+            System.out.println(
+                    "No customers added.");
+
             return;
         }
 
@@ -528,17 +532,16 @@ public class Main {
             customers.add(customer);
         }
 
-        customerManager.addCustomer(
-                customers);
+        customerManager.addCustomer(customers);
     }
 
     private static void viewCustomer() {
 
         int customerId = readPositiveInt(
-                "Enter the customer ID whose details you wish to view: ");
+                "Enter the customer ID whose details "
+                        + "you wish to view: ");
 
-        customerManager.getCustomerById(
-                customerId);
+        customerManager.getCustomerById(customerId);
     }
 
     // =========================================================
@@ -588,7 +591,10 @@ public class Main {
                 "Enter the number of supplier records: ");
 
         if (number == 0) {
-            System.out.println("No suppliers added.");
+
+            System.out.println(
+                    "No suppliers added.");
+
             return;
         }
 
@@ -622,17 +628,16 @@ public class Main {
             suppliers.add(supplier);
         }
 
-        supplierManager.addSupplier(
-                suppliers);
+        supplierManager.addSupplier(suppliers);
     }
 
     private static void viewSupplier() {
 
         int supplierId = readPositiveInt(
-                "Enter the ID of the supplier whose details you wish to know: ");
+                "Enter the ID of the supplier "
+                        + "whose details you wish to know: ");
 
-        supplierManager.getSupplierById(
-                supplierId);
+        supplierManager.getSupplierById(supplierId);
     }
 
     // =========================================================
@@ -682,7 +687,10 @@ public class Main {
                 "Enter the number of purchase records: ");
 
         if (number == 0) {
-            System.out.println("No purchases added.");
+
+            System.out.println(
+                    "No purchases added.");
+
             return;
         }
 
@@ -716,17 +724,16 @@ public class Main {
             purchases.add(purchase);
         }
 
-        purchaseManager.addPurchase(
-                purchases);
+        purchaseManager.addPurchase(purchases);
     }
 
     private static void viewPurchase() {
 
         int purchaseId = readPositiveInt(
-                "Enter the ID of the purchase whose details you wish to view: ");
+                "Enter the ID of the purchase "
+                        + "whose details you wish to view: ");
 
-        purchaseManager.getPurchaseById(
-                purchaseId);
+        purchaseManager.getPurchaseById(purchaseId);
     }
 
     // =========================================================
@@ -776,8 +783,10 @@ public class Main {
                 "Enter the number of purchase item records: ");
 
         if (number == 0) {
+
             System.out.println(
                     "No purchase items added.");
+
             return;
         }
 
@@ -818,7 +827,8 @@ public class Main {
     private static void viewPurchaseItem() {
 
         int purchaseItemId = readPositiveInt(
-                "Enter the ID of the purchase item whose details you wish to view: ");
+                "Enter the ID of the purchase item "
+                        + "whose details you wish to view: ");
 
         purchaseItemManager.getPurchaseItemById(
                 purchaseItemId);
@@ -838,7 +848,7 @@ public class Main {
             System.out.println("==========================================");
             System.out.println("                SALE MENU");
             System.out.println("==========================================");
-            System.out.println("1. Add Sale");
+            System.out.println("1. Create Sale");
             System.out.println("2. View Sale");
             System.out.println("0. Back");
             System.out.println("==========================================");
@@ -848,7 +858,7 @@ public class Main {
             switch (choice) {
 
                 case 1:
-                    addSales();
+                    createSale();
                     break;
 
                 case 2:
@@ -866,207 +876,59 @@ public class Main {
     }
 
     // =========================================================
-    // ADD SALE
+    // CREATE SALE
     // =========================================================
 
-    private static void addSales() {
+    private static void createSale() {
 
         System.out.println();
         System.out.println("==========================================");
-        System.out.println("              ADD NEW SALE");
+        System.out.println("              CREATE SALE");
         System.out.println("==========================================");
 
-        int customerId = readPositiveInt(
-                "Enter customer ID: ");
+        // -----------------------------------------------------
+        // STEP 1: SELECT CUSTOMER
+        // -----------------------------------------------------
+
+        int customerId = selectCustomer();
+
+        if (customerId == -1) {
+
+            System.out.println("Sale cancelled.");
+            return;
+        }
+
+        // -----------------------------------------------------
+        // STEP 2: PAYMENT METHOD
+        // -----------------------------------------------------
 
         String paymentMethod = readString(
                 "Enter payment method: ");
 
         // -----------------------------------------------------
-        // SUBTOTAL
+        // STEP 3: SALE ITEMS
         // -----------------------------------------------------
 
-        double subtotal = readNonNegativeDouble(
-                "Enter subtotal amount: ");
-
-        // -----------------------------------------------------
-        // DISCOUNT PERCENTAGE
-        // -----------------------------------------------------
-
-        double discountPercentage = readDiscountPercentage(
-                "Enter discount percentage: ");
-
-        // -----------------------------------------------------
-        // CALCULATE DISCOUNT
-        // -----------------------------------------------------
-
-        double discountAmount = subtotal *
-                discountPercentage /
-                100.0;
-
-        // -----------------------------------------------------
-        // CALCULATE NET AMOUNT
-        // -----------------------------------------------------
-
-        double totalNetAmount = subtotal - discountAmount;
-
-        // -----------------------------------------------------
-        // DISPLAY SUMMARY
-        // -----------------------------------------------------
-
-        System.out.println();
-        System.out.println("==========================================");
-        System.out.println("              SALE SUMMARY");
-        System.out.println("==========================================");
-
-        System.out.printf(
-                "Customer ID         : %d%n",
-                customerId);
-
-        System.out.printf(
-                "Payment Method      : %s%n",
-                paymentMethod);
-
-        System.out.printf(
-                "Subtotal            : ₹%.2f%n",
-                subtotal);
-
-        System.out.printf(
-                "Discount Percentage : %.2f%%%n",
-                discountPercentage);
-
-        System.out.printf(
-                "Discount Amount     : ₹%.2f%n",
-                discountAmount);
-
-        System.out.printf(
-                "Net Amount          : ₹%.2f%n",
-                totalNetAmount);
-
-        System.out.println(
-                "==========================================");
-
-        // -----------------------------------------------------
-        // CONFIRMATION
-        // -----------------------------------------------------
-
-        String confirmation = readString(
-                "Confirm sale? (Y/N): ").toUpperCase();
-
-        if (!confirmation.equals("Y")) {
-
-            System.out.println(
-                    "Sale cancelled.");
-
-            return;
-        }
-
-        // -----------------------------------------------------
-        // CREATE SALE OBJECT
-        // -----------------------------------------------------
-
-        Sale sale = new Sale(
-                customerId,
-                paymentMethod,
-                discountPercentage,
-                totalNetAmount);
-
-        List<Sale> sales = new ArrayList<>();
-
-        sales.add(sale);
-
-        // -----------------------------------------------------
-        // INSERT SALE
-        // -----------------------------------------------------
-
-        saleManager.addSale(
-                sales);
-    }
-
-    private static void viewSale() {
-
-        int saleId = readPositiveInt(
-                "Enter the ID of the sale whose details you wish to view: ");
-
-        saleManager.getSaleById(
-                saleId);
-    }
-
-    // =========================================================
-    // SALE ITEM MENU
-    // =========================================================
-
-    private static void saleItemMenu() {
-
-        boolean back = false;
-
-        while (!back) {
-
-            System.out.println();
-            System.out.println("==========================================");
-            System.out.println("             SALE ITEM MENU");
-            System.out.println("==========================================");
-            System.out.println("1. Add Sale Item");
-            System.out.println("2. View Sale Item");
-            System.out.println("0. Back");
-            System.out.println("==========================================");
-
-            int choice = readInt("Enter your choice: ");
-
-            switch (choice) {
-
-                case 1:
-                    addSaleItems();
-                    break;
-
-                case 2:
-                    viewSaleItem();
-                    break;
-
-                case 0:
-                    back = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
-
-    private static void addSaleItems() {
-
-        int number = readNonNegativeInt(
-                "Enter the number of sale item records: ");
-
-        if (number == 0) {
-
-            System.out.println(
-                    "No sale items added.");
-
-            return;
-        }
+        int numberOfItems = readPositiveInt(
+                "Enter the number of different sale items: ");
 
         List<SaleItem> saleItems = new ArrayList<>();
 
-        for (int i = 0; i < number; i++) {
+        double grossAmount = 0;
+
+        for (int i = 0; i < numberOfItems; i++) {
 
             System.out.println();
+            System.out.println("------------------------------------------");
             System.out.println(
-                    "Enter details for sale item "
-                            + (i + 1));
-
-            int saleId = readPositiveInt(
-                    "Enter sale ID: ");
-
-            int quantity = readPositiveInt(
-                    "Enter quantity sold: ");
+                    "Enter details for sale item " + (i + 1));
+            System.out.println("------------------------------------------");
 
             int variantId = readPositiveInt(
                     "Enter variant ID: ");
 
-            // -------------------------------------------------
-            // CHECK STOCK BEFORE ADDING SALE ITEM
-            // -------------------------------------------------
+            int quantity = readPositiveInt(
+                    "Enter quantity sold: ");
 
             boolean canSell = inventoryManager.checkSaleAvailability(
                     variantId,
@@ -1075,49 +937,240 @@ public class Main {
             if (!canSell) {
 
                 System.out.println(
-                        "Sale item cancelled.");
+                        "Insufficient stock for this variant.");
 
+                i--;
                 continue;
             }
 
             double sellingPrice = readNonNegativeDouble(
                     "Enter selling price: ");
 
+            double itemTotal = sellingPrice * quantity;
+
+            grossAmount += itemTotal;
+
+            /*
+             * Sale ID is temporarily 0.
+             * SaleManager will create the sale and return
+             * the generated sale ID.
+             */
             SaleItem saleItem = new SaleItem(
-                    saleId,
+                    0,
                     quantity,
                     variantId,
                     sellingPrice);
 
             saleItems.add(saleItem);
+
+            System.out.printf(
+                    "Item total: ₹%.2f%n",
+                    itemTotal);
         }
 
-        if (saleItems.isEmpty()) {
+        // -----------------------------------------------------
+        // STEP 4: DISCOUNT
+        // -----------------------------------------------------
+
+        System.out.println();
+        System.out.println("------------------------------------------");
+
+        System.out.printf(
+                "Gross Amount: ₹%.2f%n",
+                grossAmount);
+
+        double discountPercentage = readDiscountPercentage(
+                "Enter discount percentage: ");
+
+        double discountAmount = grossAmount
+                * discountPercentage
+                / 100.0;
+
+        double totalNetAmount = grossAmount - discountAmount;
+
+        // -----------------------------------------------------
+        // STEP 5: SALE SUMMARY
+        // -----------------------------------------------------
+
+        System.out.println();
+        System.out.println("==========================================");
+        System.out.println("              SALE SUMMARY");
+        System.out.println("==========================================");
+
+        System.out.println(
+                "Customer ID       : " + customerId);
+
+        System.out.println(
+                "Payment Method    : " + paymentMethod);
+
+        System.out.printf(
+                "Gross Amount      : ₹%.2f%n",
+                grossAmount);
+
+        System.out.printf(
+                "Discount          : %.2f%%%n",
+                discountPercentage);
+
+        System.out.printf(
+                "Discount Amount   : ₹%.2f%n",
+                discountAmount);
+
+        System.out.printf(
+                "Net Amount        : ₹%.2f%n",
+                totalNetAmount);
+
+        System.out.println(
+                "==========================================");
+
+        // -----------------------------------------------------
+        // STEP 6: CONFIRM SALE
+        // -----------------------------------------------------
+
+        String confirmation = readString(
+                "Confirm sale? (Y/N): ")
+                .toUpperCase();
+
+        if (!confirmation.equals("Y")) {
+
+            System.out.println("Sale cancelled.");
+            return;
+        }
+
+        // -----------------------------------------------------
+        // STEP 7: CREATE SALE
+        // -----------------------------------------------------
+
+        Sale sale = new Sale(
+                customerId,
+                paymentMethod,
+                discountPercentage,
+                totalNetAmount);
+
+        int saleId = saleManager.createSale(sale, saleItems);
+
+        if (saleId == -1) {
 
             System.out.println(
-                    "No sale items were added.");
+                    "Sale could not be created.");
 
             return;
         }
 
-        saleItemManager.addSaleItem(
-                saleItems);
+        /*
+         * IMPORTANT:
+         *
+         * At this point SaleManager has created the Sale.
+         *
+         * The next step is to give the generated sale ID
+         * to every SaleItem and then insert the SaleItems
+         * while reducing inventory.
+         *
+         * This part will be handled by the updated
+         * SaleManager once we combine the sale and
+         * sale-item operations.
+         */
+
+        System.out.println(
+                "Sale ID: " + saleId);
+
+        /*
+         * TEMPORARY:
+         * This will be replaced by the combined method
+         * in SaleManager.
+         */
+        System.out.println(
+                "Sale created successfully.");
     }
 
-    private static void viewSaleItem() {
+    // =========================================================
+    // SELECT CUSTOMER
+    // =========================================================
 
-        int saleItemId = readPositiveInt(
-                "Enter the ID of the sale item whose details you wish to view: ");
+    private static int selectCustomer() {
 
-        saleItemManager.getSaleItemById(
-                saleItemId);
+        System.out.println();
+        System.out.println("==========================================");
+        System.out.println("             SELECT CUSTOMER");
+        System.out.println("==========================================");
+        System.out.println("1. Use Existing Customer");
+        System.out.println("2. Create New Customer");
+        System.out.println("0. Cancel Sale");
+        System.out.println("==========================================");
+
+        int choice = readInt("Enter your choice: ");
+
+        switch (choice) {
+
+            case 1:
+
+                return readPositiveInt(
+                        "Enter existing customer ID: ");
+
+            case 2:
+
+                System.out.println();
+                System.out.println("------------------------------------------");
+                System.out.println("           CREATE NEW CUSTOMER");
+                System.out.println("------------------------------------------");
+
+                String name = readString(
+                        "Enter customer name: ");
+
+                String contact = readString(
+                        "Enter customer contact number: ");
+
+                Customer customer = new Customer(
+                        name,
+                        contact);
+
+                List<Customer> customers = new ArrayList<>();
+
+                customers.add(customer);
+
+                customerManager.addCustomer(customers);
+
+                System.out.println();
+                System.out.println(
+                        "Customer created successfully.");
+
+                System.out.println(
+                        "Enter the generated customer ID.");
+
+                return readPositiveInt(
+                        "Enter new customer ID: ");
+
+            case 0:
+
+                return -1;
+
+            default:
+
+                System.out.println(
+                        "Invalid choice.");
+
+                return selectCustomer();
+        }
+    }
+
+    // =========================================================
+    // VIEW SALE
+    // =========================================================
+
+    private static void viewSale() {
+
+        int saleId = readPositiveInt(
+                "Enter the ID of the sale whose details "
+                        + "you wish to view: ");
+
+        saleManager.getSaleById(saleId);
     }
 
     // =========================================================
     // INPUT METHODS
     // =========================================================
 
-    private static String readString(String message) {
+    private static String readString(
+            String message) {
 
         while (true) {
 
@@ -1135,7 +1188,8 @@ public class Main {
         }
     }
 
-    private static int readInt(String message) {
+    private static int readInt(
+            String message) {
 
         while (true) {
 
@@ -1155,7 +1209,8 @@ public class Main {
         }
     }
 
-    private static int readPositiveInt(String message) {
+    private static int readPositiveInt(
+            String message) {
 
         while (true) {
 
@@ -1171,7 +1226,8 @@ public class Main {
         }
     }
 
-    private static int readNonNegativeInt(String message) {
+    private static int readNonNegativeInt(
+            String message) {
 
         while (true) {
 
@@ -1187,7 +1243,8 @@ public class Main {
         }
     }
 
-    private static double readDouble(String message) {
+    private static double readDouble(
+            String message) {
 
         while (true) {
 
@@ -1207,7 +1264,8 @@ public class Main {
         }
     }
 
-    private static double readNonNegativeDouble(String message) {
+    private static double readNonNegativeDouble(
+            String message) {
 
         while (true) {
 
