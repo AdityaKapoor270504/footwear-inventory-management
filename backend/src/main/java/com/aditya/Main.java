@@ -454,11 +454,10 @@ public class Main {
 
     private static void viewInventory() {
 
-        int variantId =
-                readPositiveInt(
-                        "Enter the variant ID whose inventory you wish to view: ");
+        System.out.print("Enter the product ID whose inventory you wish to view: ");
+        int productId = scanner.nextInt();
 
-        inventoryManager.viewInventory(variantId);
+        inventoryManager.viewInventory(productId);
     }
 
     // =========================================================
