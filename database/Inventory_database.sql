@@ -137,3 +137,6 @@ ALTER COLUMN purchase_date SET DEFAULT CURRENT_DATE;
 
 ALTER TABLE Sale
 ALTER COLUMN sale_date SET DEFAULT CURRENT_DATE;
+
+ALTER TABLE Sale
+RENAME COLUMN discount_offered TO discount_percentage;

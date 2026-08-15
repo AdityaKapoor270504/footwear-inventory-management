@@ -123,6 +123,94 @@ public class InventoryManager {
         }
     }
 
+    public boolean checkSaleAvailability(int variantId, int quantity) {
+
+        String sql = """
+                SELECT
+                    i.quantity_in_stock,
+                    p.product_name,
+                    pv.size_of_product,
+                    pv.colour
+                FROM Inventory i
+                INNER JOIN Product_Variant pv
+                    ON i.variant_id = pv.variant_id
+                INNER JOIN Product p
+                    ON pv.product_id = p.product_id
+                WHERE i.variant_id = ?
+                """;
+
+        try (Connection connection = DatabaseConnection.connect();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, variantId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+
+                System.out.println();
+                System.out.println("==========================================");
+                System.out.println("             SALE CHECK");
+                System.out.println("==========================================");
+                System.out.println("Variant ID " + variantId
+                        + " does not exist in inventory.");
+                System.out.println("==========================================");
+
+                return false;
+            }
+
+            int availableStock = resultSet.getInt("quantity_in_stock");
+
+            String productName = resultSet.getString("product_name");
+
+            String size = resultSet.getString("size_of_product");
+
+            String colour = resultSet.getString("colour");
+
+            System.out.println();
+            System.out.println("==========================================");
+            System.out.println("             SALE CHECK");
+            System.out.println("==========================================");
+
+            System.out.println("Product   : " + productName);
+            System.out.println("Size      : " + size);
+            System.out.println("Colour    : " + colour);
+            System.out.println("Available : " + availableStock);
+            System.out.println("Requested : " + quantity);
+
+            if (quantity <= availableStock) {
+
+                System.out.println();
+                System.out.println("SALE CAN BE COMPLETED.");
+                System.out.println("Remaining stock after sale: "
+                        + (availableStock - quantity));
+
+                System.out.println("==========================================");
+
+                return true;
+
+            } else {
+
+                System.out.println();
+                System.out.println("SALE CANNOT BE COMPLETED.");
+                System.out.println("Insufficient stock.");
+                System.out.println("Short by: "
+                        + (quantity - availableStock));
+
+                System.out.println("==========================================");
+
+                return false;
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println();
+            System.out.println("Unable to check inventory.");
+            e.printStackTrace();
+
+            return false;
+        }
+    }
 
     private void printVariant(ResultSet resultSet)
             throws SQLException {

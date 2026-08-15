@@ -5,24 +5,24 @@ public class Sale {
     private int saleId;
     private int customerId;
     private String paymentMethod;
-    private double discountOffered;
+    private double discountPercentage;
     private double totalNetAmount;
 
-    public Sale (int sale_id, int customer_id, String payment_method, double discount_offered, double total_net_amount) {
+    public Sale (int sale_id, int customer_id, String payment_method, double discount_percentage, double total_net_amount) {
 
         this.saleId = sale_id;
         this.customerId = customer_id;
         this.paymentMethod = payment_method;
-        this.discountOffered = discount_offered;
+        this.discountPercentage = discount_percentage;
         this.totalNetAmount = total_net_amount;
 
     }
 
-    public Sale (int customer_id, String payment_method, double discount_offered, double total_net_amount) {
+    public Sale (int customer_id, String payment_method, double discount_percentage, double total_net_amount) {
 
         this.customerId = customer_id;
         this.paymentMethod = payment_method;
-        this.discountOffered = discount_offered;
+        this.discountPercentage = discount_percentage;
         this.totalNetAmount = total_net_amount;
 
     }
@@ -39,8 +39,8 @@ public class Sale {
         return paymentMethod;
     }
     
-    public double getDiscountOffered () {
-        return discountOffered;
+    public double getDiscountPercentage () {
+        return discountPercentage;
     }
 
     public double getTotalNetAmount () {
