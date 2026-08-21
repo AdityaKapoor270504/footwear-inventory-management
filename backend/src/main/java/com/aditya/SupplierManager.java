@@ -82,4 +82,23 @@ public class SupplierManager {
             e.printStackTrace();
         }
     }
+
+    public boolean supplierExists(int supplierId) {
+
+        String sql = "SELECT 1 FROM Supplier WHERE supplier_id = ?";
+
+        try (Connection connection = DatabaseConnection.connect();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, supplierId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+
+        } catch (SQLException e) {
+            System.out.println("Error checking supplier: " + e.getMessage());
+            return false;
+        }
+    }
 }

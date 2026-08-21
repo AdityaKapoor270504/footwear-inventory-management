@@ -212,6 +212,47 @@ public class InventoryManager {
         }
     }
 
+    public boolean increaseInventory(Connection connection,
+            int variantId,
+            int quantity) throws SQLException {
+
+        String sql = """
+                UPDATE Inventory
+                SET quantity_in_stock = quantity_in_stock + ?,
+                    updated_at = CURRENT_DATE
+                WHERE variant_id = ?
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, variantId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return rowsUpdated > 0;
+        }
+    }
+
+    public boolean variantExists(Connection connection, int variantId)
+            throws SQLException {
+
+        String sql = """
+                SELECT 1
+                FROM Product_Variant
+                WHERE variant_id = ?
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, variantId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        }
+    }
+
     private void printVariant(ResultSet resultSet)
             throws SQLException {
 

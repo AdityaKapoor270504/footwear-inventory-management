@@ -8,15 +8,20 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    // Managers
+    // =========================================================
+    // MANAGERS
+    // =========================================================
+
     private static final ProductManager productManager = new ProductManager();
     private static final ProductVariantManager productVariantManager = new ProductVariantManager();
     private static final InventoryManager inventoryManager = new InventoryManager();
     private static final CustomerManager customerManager = new CustomerManager();
-    private static final SupplierManager supplierManager = new SupplierManager();
     private static final PurchaseManager purchaseManager = new PurchaseManager();
-    private static final PurchaseItemManager purchaseItemManager = new PurchaseItemManager();
     private static final SaleManager saleManager = new SaleManager();
+
+    // =========================================================
+    // MAIN
+    // =========================================================
 
     public static void main(String[] args) {
 
@@ -43,18 +48,10 @@ public class Main {
                     break;
 
                 case 4:
-                    supplierMenu();
-                    break;
-
-                case 5:
                     purchaseMenu();
                     break;
 
-                case 6:
-                    purchaseItemMenu();
-                    break;
-
-                case 7:
+                case 5:
                     saleMenu();
                     break;
 
@@ -70,7 +67,7 @@ public class Main {
                 default:
                     System.out.println();
                     System.out.println("Invalid choice.");
-                    System.out.println("Please enter a number between 0 and 7.");
+                    System.out.println("Please enter a number between 0 and 5.");
             }
         }
 
@@ -90,10 +87,8 @@ public class Main {
         System.out.println("1. Products");
         System.out.println("2. Product Variants");
         System.out.println("3. Inventory");
-        System.out.println("4. Suppliers");
-        System.out.println("5. Purchases");
-        System.out.println("6. Purchase Items");
-        System.out.println("7. Sales");
+        System.out.println("4. Purchases");
+        System.out.println("5. Sales");
         System.out.println("0. Exit");
         System.out.println("==========================================");
     }
@@ -155,6 +150,7 @@ public class Main {
                 "Enter the number of products you wish to enter: ");
 
         if (number == 0) {
+
             System.out.println("No products added.");
             return;
         }
@@ -166,20 +162,25 @@ public class Main {
             System.out.println();
             System.out.println("Enter details for product " + (i + 1));
 
-            String productName = readString("Enter product name: ");
+            String productName = readString(
+                    "Enter product name: ");
 
-            String productBrand = readString("Enter product brand: ");
+            String productBrand = readString(
+                    "Enter product brand: ");
 
-            String productCategory = readString("Enter product category: ");
+            String productCategory = readString(
+                    "Enter product category: ");
 
-            String gender = readString("Enter gender (M/F): ")
+            String gender = readString(
+                    "Enter gender (M/F): ")
                     .toUpperCase();
 
             while (!gender.equals("M") && !gender.equals("F")) {
 
                 System.out.println("Gender must be M or F.");
 
-                gender = readString("Enter gender (M/F): ")
+                gender = readString(
+                        "Enter gender (M/F): ")
                         .toUpperCase();
             }
 
@@ -321,9 +322,11 @@ public class Main {
             int productId = readPositiveInt(
                     "Enter product ID: ");
 
-            String size = readString("Enter size: ");
+            String size = readString(
+                    "Enter size: ");
 
-            String colour = readString("Enter colour: ");
+            String colour = readString(
+                    "Enter colour: ");
 
             ProductVariant variant = new ProductVariant(
                     productId,
@@ -452,102 +455,6 @@ public class Main {
     }
 
     // =========================================================
-    // SUPPLIER MENU
-    // =========================================================
-
-    private static void supplierMenu() {
-
-        boolean back = false;
-
-        while (!back) {
-
-            System.out.println();
-            System.out.println("==========================================");
-            System.out.println("             SUPPLIER MENU");
-            System.out.println("==========================================");
-            System.out.println("1. Add Supplier");
-            System.out.println("2. View Supplier");
-            System.out.println("0. Back");
-            System.out.println("==========================================");
-
-            int choice = readInt("Enter your choice: ");
-
-            switch (choice) {
-
-                case 1:
-                    addSuppliers();
-                    break;
-
-                case 2:
-                    viewSupplier();
-                    break;
-
-                case 0:
-                    back = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
-
-    private static void addSuppliers() {
-
-        int number = readNonNegativeInt(
-                "Enter the number of supplier records: ");
-
-        if (number == 0) {
-
-            System.out.println(
-                    "No suppliers added.");
-
-            return;
-        }
-
-        List<Supplier> suppliers = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-
-            System.out.println();
-            System.out.println(
-                    "Enter details for supplier "
-                            + (i + 1));
-
-            String name = readString(
-                    "Enter supplier name: ");
-
-            String contact = readString(
-                    "Enter supplier contact number: ");
-
-            String mail = readString(
-                    "Enter supplier mail: ");
-
-            String address = readString(
-                    "Enter supplier address: ");
-
-            Supplier supplier = new Supplier(
-                    name,
-                    contact,
-                    mail,
-                    address);
-
-            suppliers.add(supplier);
-        }
-
-        supplierManager.addSupplier(suppliers);
-    }
-
-    private static void viewSupplier() {
-
-        int supplierId = readPositiveInt(
-                "Enter the ID of the supplier "
-                        + "whose details you wish to know: ");
-
-        supplierManager.getSupplierById(supplierId);
-    }
-
-    // =========================================================
     // PURCHASE MENU
     // =========================================================
 
@@ -561,7 +468,7 @@ public class Main {
             System.out.println("==========================================");
             System.out.println("             PURCHASE MENU");
             System.out.println("==========================================");
-            System.out.println("1. Add Purchase");
+            System.out.println("1. Create Purchase");
             System.out.println("2. View Purchase");
             System.out.println("0. Back");
             System.out.println("==========================================");
@@ -571,7 +478,7 @@ public class Main {
             switch (choice) {
 
                 case 1:
-                    addPurchases();
+                    createPurchase();
                     break;
 
                 case 2:
@@ -588,51 +495,18 @@ public class Main {
         }
     }
 
-    private static void addPurchases() {
+    // =========================================================
+    // CREATE PURCHASE
+    // =========================================================
 
-        int number = readNonNegativeInt(
-                "Enter the number of purchase records: ");
+    private static void createPurchase() {
 
-        if (number == 0) {
-
-            System.out.println(
-                    "No purchases added.");
-
-            return;
-        }
-
-        List<Purchase> purchases = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-
-            System.out.println();
-            System.out.println(
-                    "Enter details for purchase "
-                            + (i + 1));
-
-            int supplierId = readPositiveInt(
-                    "Enter supplier ID: ");
-
-            String invoiceNumber = readString(
-                    "Enter invoice number: ");
-
-            String paymentMethod = readString(
-                    "Enter payment method: ");
-
-            double totalAmount = readNonNegativeDouble(
-                    "Enter total payment amount: ");
-
-            Purchase purchase = new Purchase(
-                    supplierId,
-                    invoiceNumber,
-                    paymentMethod,
-                    totalAmount);
-
-            purchases.add(purchase);
-        }
-
-        purchaseManager.addPurchase(purchases);
+        purchaseManager.createPurchase(scanner);
     }
+
+    // =========================================================
+    // VIEW PURCHASE
+    // =========================================================
 
     private static void viewPurchase() {
 
@@ -641,104 +515,6 @@ public class Main {
                         + "whose details you wish to view: ");
 
         purchaseManager.getPurchaseById(purchaseId);
-    }
-
-    // =========================================================
-    // PURCHASE ITEM MENU
-    // =========================================================
-
-    private static void purchaseItemMenu() {
-
-        boolean back = false;
-
-        while (!back) {
-
-            System.out.println();
-            System.out.println("==========================================");
-            System.out.println("          PURCHASE ITEM MENU");
-            System.out.println("==========================================");
-            System.out.println("1. Add Purchase Item");
-            System.out.println("2. View Purchase Item");
-            System.out.println("0. Back");
-            System.out.println("==========================================");
-
-            int choice = readInt("Enter your choice: ");
-
-            switch (choice) {
-
-                case 1:
-                    addPurchaseItems();
-                    break;
-
-                case 2:
-                    viewPurchaseItem();
-                    break;
-
-                case 0:
-                    back = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
-
-    private static void addPurchaseItems() {
-
-        int number = readNonNegativeInt(
-                "Enter the number of purchase item records: ");
-
-        if (number == 0) {
-
-            System.out.println(
-                    "No purchase items added.");
-
-            return;
-        }
-
-        List<PurchaseItem> purchaseItems = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-
-            System.out.println();
-            System.out.println(
-                    "Enter details for purchase item "
-                            + (i + 1));
-
-            int purchaseId = readPositiveInt(
-                    "Enter purchase ID: ");
-
-            int quantity = readPositiveInt(
-                    "Enter quantity: ");
-
-            int variantId = readPositiveInt(
-                    "Enter variant ID: ");
-
-            double costPrice = readNonNegativeDouble(
-                    "Enter cost price: ");
-
-            PurchaseItem purchaseItem = new PurchaseItem(
-                    purchaseId,
-                    quantity,
-                    variantId,
-                    costPrice);
-
-            purchaseItems.add(purchaseItem);
-        }
-
-        purchaseItemManager.addPurchaseItem(
-                purchaseItems);
-    }
-
-    private static void viewPurchaseItem() {
-
-        int purchaseItemId = readPositiveInt(
-                "Enter the ID of the purchase item "
-                        + "whose details you wish to view: ");
-
-        purchaseItemManager.getPurchaseItemById(
-                purchaseItemId);
     }
 
     // =========================================================
@@ -948,7 +724,9 @@ public class Main {
                 discountPercentage,
                 totalNetAmount);
 
-        int saleId = saleManager.createSale(sale, saleItems);
+        int saleId = saleManager.createSale(
+                sale,
+                saleItems);
 
         if (saleId == -1) {
 
@@ -1010,7 +788,8 @@ public class Main {
 
                 customers.add(customer);
 
-                customerManager.addCustomer(customers);
+                customerManager.addCustomer(
+                        customers);
 
                 System.out.println();
                 System.out.println(
@@ -1087,7 +866,8 @@ public class Main {
             } catch (NumberFormatException e) {
 
                 System.out.println(
-                        "Invalid input. Please enter a valid integer.");
+                        "Invalid input. "
+                                + "Please enter a valid integer.");
             }
         }
     }
@@ -1142,7 +922,8 @@ public class Main {
             } catch (NumberFormatException e) {
 
                 System.out.println(
-                        "Invalid input. Please enter a valid number.");
+                        "Invalid input. "
+                                + "Please enter a valid number.");
             }
         }
     }
