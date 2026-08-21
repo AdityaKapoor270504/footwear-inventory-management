@@ -43,22 +43,18 @@ public class Main {
                     break;
 
                 case 4:
-                    customerMenu();
-                    break;
-
-                case 5:
                     supplierMenu();
                     break;
 
-                case 6:
+                case 5:
                     purchaseMenu();
                     break;
 
-                case 7:
+                case 6:
                     purchaseItemMenu();
                     break;
 
-                case 8:
+                case 7:
                     saleMenu();
                     break;
 
@@ -74,7 +70,7 @@ public class Main {
                 default:
                     System.out.println();
                     System.out.println("Invalid choice.");
-                    System.out.println("Please enter a number between 0 and 8.");
+                    System.out.println("Please enter a number between 0 and 7.");
             }
         }
 
@@ -94,11 +90,10 @@ public class Main {
         System.out.println("1. Products");
         System.out.println("2. Product Variants");
         System.out.println("3. Inventory");
-        System.out.println("4. Customers");
-        System.out.println("5. Suppliers");
-        System.out.println("6. Purchases");
-        System.out.println("7. Purchase Items");
-        System.out.println("8. Sales");
+        System.out.println("4. Suppliers");
+        System.out.println("5. Purchases");
+        System.out.println("6. Purchase Items");
+        System.out.println("7. Sales");
         System.out.println("0. Exit");
         System.out.println("==========================================");
     }
@@ -454,94 +449,6 @@ public class Main {
                         + "you wish to view: ");
 
         inventoryManager.viewInventory(productId);
-    }
-
-    // =========================================================
-    // CUSTOMER MENU
-    // =========================================================
-
-    private static void customerMenu() {
-
-        boolean back = false;
-
-        while (!back) {
-
-            System.out.println();
-            System.out.println("==========================================");
-            System.out.println("             CUSTOMER MENU");
-            System.out.println("==========================================");
-            System.out.println("1. Add Customer");
-            System.out.println("2. View Customer");
-            System.out.println("0. Back");
-            System.out.println("==========================================");
-
-            int choice = readInt("Enter your choice: ");
-
-            switch (choice) {
-
-                case 1:
-                    addCustomers();
-                    break;
-
-                case 2:
-                    viewCustomer();
-                    break;
-
-                case 0:
-                    back = true;
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
-            }
-        }
-    }
-
-    private static void addCustomers() {
-
-        int number = readNonNegativeInt(
-                "Enter the number of customer records: ");
-
-        if (number == 0) {
-
-            System.out.println(
-                    "No customers added.");
-
-            return;
-        }
-
-        List<Customer> customers = new ArrayList<>();
-
-        for (int i = 0; i < number; i++) {
-
-            System.out.println();
-            System.out.println(
-                    "Enter details for customer "
-                            + (i + 1));
-
-            String name = readString(
-                    "Enter customer name: ");
-
-            String contact = readString(
-                    "Enter customer contact number: ");
-
-            Customer customer = new Customer(
-                    name,
-                    contact);
-
-            customers.add(customer);
-        }
-
-        customerManager.addCustomer(customers);
-    }
-
-    private static void viewCustomer() {
-
-        int customerId = readPositiveInt(
-                "Enter the customer ID whose details "
-                        + "you wish to view: ");
-
-        customerManager.getCustomerById(customerId);
     }
 
     // =========================================================
@@ -950,11 +857,6 @@ public class Main {
 
             grossAmount += itemTotal;
 
-            /*
-             * Sale ID is temporarily 0.
-             * SaleManager will create the sale and return
-             * the generated sale ID.
-             */
             SaleItem saleItem = new SaleItem(
                     0,
                     quantity,
@@ -1056,28 +958,9 @@ public class Main {
             return;
         }
 
-        /*
-         * IMPORTANT:
-         *
-         * At this point SaleManager has created the Sale.
-         *
-         * The next step is to give the generated sale ID
-         * to every SaleItem and then insert the SaleItems
-         * while reducing inventory.
-         *
-         * This part will be handled by the updated
-         * SaleManager once we combine the sale and
-         * sale-item operations.
-         */
-
         System.out.println(
                 "Sale ID: " + saleId);
 
-        /*
-         * TEMPORARY:
-         * This will be replaced by the combined method
-         * in SaleManager.
-         */
         System.out.println(
                 "Sale created successfully.");
     }
